@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -89,38 +88,6 @@ public class CheeseLevel extends BaseScreen{
         mainStage.addActor(brick);
 
 
-        // TextureRegion[] frames = new TextureRegion[4];
-        // for(int i = 0; i < 4; i++){
-        //     String filename =  "assets/mouse" + i + ".png";
-        //     Texture tex = new Texture(Gdx.files.internal(filename));
-        //     tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        //     frames[i] = new TextureRegion(tex);
-        // }
-
-        // TextureRegion[] frames2 = new TextureRegion[4];
-        // for(int i = 0; i < 4; i++){
-        //     String filename =  "assets/mouse" + i + ".png";
-        //     Texture tex = new Texture(Gdx.files.internal(filename));
-        //     tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-        //     frames2[i] = new TextureRegion(tex);
-        // }
-
-        // Array<TextureRegion> framesArray = new Array<TextureRegion>(frames);
-        // Array<TextureRegion> framesArray2 = new Array<TextureRegion>(frames2);
-        //How we are basically looping our pictures to be displayed one to another
-        // Animation<TextureRegion> anim = new Animation<TextureRegion>(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
-        // Animation<TextureRegion> anim2 = new Animation<TextureRegion>(0.1f, framesArray2, Animation.PlayMode.LOOP_PINGPONG);
-        // mousey.setAnimation(anim);
-        // mousey2.setAnimation(anim2);
-        //Origin middle of the mouse
-        // mousey.setOrigin(mousey.getWidth() / 2, mousey.getHeight() / 2);
-        // mousey2.setOrigin(mousey2.getWidth() / 2, mousey2.getHeight() / 2);
-        //we can use speed variable
-        // mousey.setPosition(20, 20);
-        // mousey2.setPosition(500, 20);
-        // mainStage.addActor(mousey);
-        // mainStage.addActor(mousey2);
-
         // The Players
         player1 = new BaseActor();
         player2 = new BaseActor();
@@ -164,56 +131,96 @@ public class CheeseLevel extends BaseScreen{
         //Acceleration
 
         Rectangle brickRect = brick.getBoundingRectangle();
-        Rectangle mouseyRectangle = player1.getBoundingRectangle();
+        Rectangle player1Rectangle = player1.getBoundingRectangle();
+        Rectangle player2REctangle = player2.getBoundingRectangle();
 
         player1.velocityX = 0;
         player1.velocityY = 0;
         player2.velocityX = 0;
         player2.velocityY = 0;
 
-        if(Gdx.input.isKeyPressed(Keys.LEFT)){
-            if(!((player1.getX() < brick.getX() + brick.getWidth()) && (brick.getY() < player1.getY() + player1.getHeight()) && (player1.getY() < brick.getY() + brick.getHeight()) && !(player1.getX() + player1.getWidth() < brick.getX())))
-                player1.velocityX -= (200);
+        // First Player
+        if(Gdx.input.isKeyPressed(Keys.LEFT)){ // Left
+            if( player1.getY() + 65 > brick.getY() && player1.getY() + 10 < brick.getY() + brick.getHeight()  ) {
+                if(!player1Rectangle.contains(brick.getX() + brick.getWidth(), player1.getY())) {
+                    player1.velocityX -= (150);
+                }
+            }
             else {
-                player1.velocityX += 200;
+                player1.velocityX -= (150);
             }
         }
-        if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-            if(!(brick.getX() < player1.getX() + player1.getWidth() && brick.getY() < player1.getY() + player1.getHeight() && player1.getY() < brick.getY() + brick.getHeight() &&!(player1.getX() > brick.getX() + brick.getWidth())))
-                player1.velocityX += 200;
+        if(Gdx.input.isKeyPressed(Keys.RIGHT)){ // Right
+            if( player1.getY() + 65 > brick.getY() && player1.getY() + 10 < brick.getY() + brick.getHeight()  ) {
+                if(!player1Rectangle.contains(brick.getX(), player1.getY())) {
+                    player1.velocityX += (150);
+                }
+            }
             else {
-                player1.velocityX -= 200;
+                player1.velocityX += (150);
             }
         }
-        if(Gdx.input.isKeyPressed(Keys.UP)){
-            if(!(player1.getY() + player1.getHeight() > brick.getY() &&!(player1.getY() > brick.getY() + brick.getHeight())&& player1.getX() + player1.getHeight() > brick.getX() && player1.getX() + player1.getHeight() < brick.getX() + brick.getWidth()))
-                player1.velocityY += (200);
+        if(Gdx.input.isKeyPressed(Keys.UP)){ // Up
+            if( player1.getX() + 65 > brick.getX() && player1.getX() + 10 < brick.getX() + brick.getWidth()  ) {
+                if(!player1Rectangle.contains(player1.getX(), brick.getY())) {
+                    player1.velocityY += (150);
+                }
+            }
             else {
-                player1.velocityY -= 200;
+                player1.velocityY += (150);
             }
         }
-        if(Gdx.input.isKeyPressed(Keys.DOWN)){
-            if(!(player1.getY()  < brick.getY() + brick.getHeight() &&!(player1.getY() + player1.getHeight() < brick.getY() )&& player1.getX() + player1.getHeight() > brick.getX() && player1.getX() + player1.getHeight() < brick.getX() + brick.getWidth()))
-                player1.velocityY -= (200);
+        if(Gdx.input.isKeyPressed(Keys.DOWN)){ // Down
+            if( player1.getX() + 65 > brick.getX() && player1.getX() + 10 < brick.getX() + brick.getWidth()  ) {
+                if(!player1Rectangle.contains(player1.getX(), brick.getY() + brick.getHeight())) {
+                    player1.velocityY -= (150);
+                }
+            }
             else {
-                player1.velocityY += 200;
+                player1.velocityY -= (150);
             }
         }
 
-        if(Gdx.input.isKeyPressed(Keys.A)){
-            player2.velocityX -= (150 + mousey2Speed);
+        // Second Player
+        if(Gdx.input.isKeyPressed(Keys.A)){ // Left
+            if( player2.getY() + 65 > brick.getY() && player2.getY() + 10 < brick.getY() + brick.getHeight()  ) {
+                if(!player2REctangle.contains(brick.getX() + brick.getWidth(), player2.getY())) {
+                    player2.velocityX -= (150);
+                }
+            }
+            else {
+                player2.velocityX -= (150);
+            }
         }
-        if(Gdx.input.isKeyPressed(Keys.D)){
-            player2.velocityX += (150 + mousey2Speed);
+        if(Gdx.input.isKeyPressed(Keys.D)){ // Right
+            if( player2.getY() + 65 > brick.getY() && player2.getY() + 10 < brick.getY() + brick.getHeight()  ) {
+                if(!player2REctangle.contains(brick.getX(), player2.getY())) {
+                    player2.velocityX += (150);
+                }
+            }
+            else {
+                player2.velocityX += (150);
+            }
         }
-        if(Gdx.input.isKeyPressed(Keys.W)){
-            player2.velocityY += (150);
+        if(Gdx.input.isKeyPressed(Keys.W)){ // Up
+            if( player2.getX() + 65 > brick.getX() && player2.getX() + 10 < brick.getX() + brick.getWidth()  ) {
+                if(!player2REctangle.contains(player2.getX(), brick.getY())) {
+                    player2.velocityY += (150);
+                }
+            }
+            else {
+                player2.velocityY += (150);
+            }
         }
-        if(Gdx.input.isKeyPressed(Keys.S)){
-            player2.velocityY -= (150);
-        }
-        if(Gdx.input.isKeyPressed(Keys.ENTER)){
-            mousey2Speed += 150;
+        if(Gdx.input.isKeyPressed(Keys.S)){ // Down
+            if( player2.getX() + 65 > brick.getX() && player2.getX() + 10 < brick.getX() + brick.getWidth()  ) {
+                if(!player2REctangle.contains(player2.getX(), brick.getY() + brick.getHeight())) {
+                    player2.velocityY -= (150);
+                }
+            }
+            else {
+                player2.velocityY -= (150);
+            }
         }
 
         // Escape button
@@ -231,7 +238,7 @@ public class CheeseLevel extends BaseScreen{
         Rectangle mousey2Rectangle = player2.getBoundingRectangle();
 
         //If 2 rectangle are in the same location
-        if(!win && (cheeseRectangle.contains(mouseyRectangle) || cheeseRectangle.contains(mousey2Rectangle))){
+        if(!win && (cheeseRectangle.contains(player1Rectangle) || cheeseRectangle.contains(mousey2Rectangle))){
             mousey1Speed += 100;
             mousey2Speed += 50;
             win = true;
@@ -268,35 +275,6 @@ public class CheeseLevel extends BaseScreen{
             timeElipsed += dt;
             timeLabel.setText("Time: " + (int)timeElipsed);
         }
-        Camera cam = mainStage.getCamera();
-        cam.position.set(player1.getX() + player1.getOriginX(), player1.getY() + player1.getOriginY(), 0);
-        cam.position.x = MathUtils.clamp(cam.position.x, viewWidth / 2, mapWidth - viewWidth / 2);
-        cam.position.y = MathUtils.clamp(cam.position.y, viewHeight / 2, mapHeight - viewHeight / 2);
-        cam.update();
     }
 
-    // public boolean keyDown(int keycode){
-    //     if(keycode == KEYS.M){
-    //         game.setScreen(new CheeseMenu(game));
-    //     }
-    //     return false;
-    // }
-
-    // public boolean isMoveable(){
-    //     if(mousey.getX() == brick.getX() - brick.getHeight() || ){
-    //         return false;
-    //     }
-    //     else if(mousey.getY() == brick.getY() - brick.getHeight() || ){
-
-    //     }
-    //     else{
-
-    //     }
-    // }
-
-    // public void move(){
-    //     if(isMoveable()){
-
-    //     }
-    // }
 }
