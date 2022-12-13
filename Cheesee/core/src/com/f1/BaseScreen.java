@@ -89,7 +89,7 @@ public abstract class BaseScreen implements Screen, InputProcessor{
     public boolean keyUp(int keycode){
         return false;
     } 
-    public boolean keyTyped(Character c){
+    public boolean keyTyped(Characters c){
         return false;
     }
     public boolean mouseMoved(int screenX, int screenY){

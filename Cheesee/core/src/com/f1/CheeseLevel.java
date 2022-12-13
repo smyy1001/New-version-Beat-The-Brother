@@ -18,12 +18,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.compression.lzma.Base;
 
 public class CheeseLevel extends BaseScreen{
     
-    private BaseActor ball1;
-    private BaseActor ball2;
+    CheeseGame game;
+    // private AnimatedActor mousey;
+    // private AnimatedActor mousey2;
+    private BaseActor player1;
+    private BaseActor player2;
     private float mousey1Speed;
     private float mousey2Speed;
     private BaseActor brick;
@@ -31,7 +33,6 @@ public class CheeseLevel extends BaseScreen{
     private BaseActor winText;
     private BaseActor cheese;
     private boolean win;
-
     public static Music backgroundMusic;
 
     private float timeElipsed;
@@ -39,8 +40,9 @@ public class CheeseLevel extends BaseScreen{
     final int mapWidth = 800;
     final int mapHeight = 800;
 
-    public CheeseLevel(Game g){
+    public CheeseLevel(CheeseGame g){
         super(g);
+        game = g;
     }
 
     @Override
@@ -48,6 +50,7 @@ public class CheeseLevel extends BaseScreen{
         // TODO Auto-generated method stub
         return false;
     }
+
     @Override
     public boolean scrolled(float amountX, float amountY) {
         
@@ -62,20 +65,19 @@ public class CheeseLevel extends BaseScreen{
         floor = new BaseActor();
         floor.setTexture(new Texture(Gdx.files.internal("assets/tiles-800-800.jpg")));
         floor.setPosition(0, 0);
+        floor.setSize(1500, 1500);
         mainStage.addActor(floor);
 
         // mousey1Speed = 75;
         // mousey2Speed = 50;
 
-        ball1 = new BaseActor();
-        ball2 = new BaseActor();
+        // mousey = new AnimatedActor();
+        // mousey2 = new AnimatedActor();
 
         brick = new BaseActor();
         cheese = new BaseActor();
-        ball1.setTexture(new Texture(Gdx.files.internal("assets/blueBall.png")));
-        ball2.setTexture(new Texture(Gdx.files.internal("assets/blueBall.png")));
         cheese.setTexture(new Texture(Gdx.files.internal("assets/cheese.png")));
-        brick.setTexture(new Texture(Gdx.files.internal("assets/Brick_gray.jpeg")));
+        brick.setTexture(new Texture(Gdx.files.internal("assets/brick-11.png")));
         float randX = MathUtils.random(0, viewWidth);
         float randY = MathUtils.random(0, viewHeight);
         cheese.setPosition(randX, randY);
@@ -86,16 +88,50 @@ public class CheeseLevel extends BaseScreen{
         mainStage.addActor(cheese);
         mainStage.addActor(brick);
 
-        ball1.setOrigin(ball1.getWidth() / 2, ball1.getHeight() / 2);
-        ball2.setOrigin(ball2.getWidth() / 2, ball2.getHeight() / 2);
+
+        // TextureRegion[] frames = new TextureRegion[4];
+        // for(int i = 0; i < 4; i++){
+        //     String filename =  "assets/mouse" + i + ".png";
+        //     Texture tex = new Texture(Gdx.files.internal(filename));
+        //     tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        //     frames[i] = new TextureRegion(tex);
+        // }
+
+        // TextureRegion[] frames2 = new TextureRegion[4];
+        // for(int i = 0; i < 4; i++){
+        //     String filename =  "assets/mouse" + i + ".png";
+        //     Texture tex = new Texture(Gdx.files.internal(filename));
+        //     tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        //     frames2[i] = new TextureRegion(tex);
+        // }
+
+        // Array<TextureRegion> framesArray = new Array<TextureRegion>(frames);
+        // Array<TextureRegion> framesArray2 = new Array<TextureRegion>(frames2);
+        //How we are basically looping our pictures to be displayed one to another
+        // Animation<TextureRegion> anim = new Animation<TextureRegion>(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
+        // Animation<TextureRegion> anim2 = new Animation<TextureRegion>(0.1f, framesArray2, Animation.PlayMode.LOOP_PINGPONG);
+        // mousey.setAnimation(anim);
+        // mousey2.setAnimation(anim2);
+        //Origin middle of the mouse
+        // mousey.setOrigin(mousey.getWidth() / 2, mousey.getHeight() / 2);
+        // mousey2.setOrigin(mousey2.getWidth() / 2, mousey2.getHeight() / 2);
         //we can use speed variable
-        ball1.setPosition(20, 20);
-        ball1.setSize(80, 80);
-        ball2.setPosition(500, 20);
-        ball2.setSize(80, 80);
-        brick.setSize(100, 100);
-        mainStage.addActor(ball1);
-        mainStage.addActor(ball2);
+        // mousey.setPosition(20, 20);
+        // mousey2.setPosition(500, 20);
+        // mainStage.addActor(mousey);
+        // mainStage.addActor(mousey2);
+
+        // The Players
+        player1 = new BaseActor();
+        player2 = new BaseActor();
+        player1.setTexture(new Texture(Gdx.files.internal("blueBall.png")));
+        player2.setTexture(new Texture(Gdx.files.internal("purpleBall.png")));
+        player1.setPosition(20, 20);
+        player2.setPosition(500, 20);
+        player1.setSize(75, 75);
+        player2.setSize(75, 75);
+        mainStage.addActor(player1);
+        mainStage.addActor(player2);
 
         winText = new BaseActor();
         winText.setTexture(new Texture(Gdx.files.internal("assets/you-win.png")));
@@ -105,82 +141,94 @@ public class CheeseLevel extends BaseScreen{
 
         BitmapFont font = new BitmapFont();
         String text = "Time: 0";
-        LabelStyle style = new LabelStyle(font, Color.NAVY);
+        LabelStyle style = new LabelStyle(font, Color.WHITE);
         timeLabel = new Label(text, style);
         timeLabel.setFontScale(2);
-        timeLabel.setPosition(500, 440);
+        timeLabel.setPosition(600, 700);
         uiStage.addActor(timeLabel);
 
         win = false;
     }
 
+    public void setPlayer( int playerNum, String texture) { //!      
+        if(playerNum == 1) {
+        player1.setTexture(new Texture(Gdx.files.internal(texture)));
+        }
+        else {
+        player2.setTexture(new Texture(Gdx.files.internal(texture)));
+        }
+    }
+
     @Override
     public void update(float dt) {
+        //Acceleration
 
         Rectangle brickRect = brick.getBoundingRectangle();
-        Rectangle mouseyRectangle = ball1.getBoundingRectangle();
+        Rectangle mouseyRectangle = player1.getBoundingRectangle();
 
-        ball1.velocityX = 0;
-        ball1.velocityY = 0;
-        ball2.velocityX = 0;
-        ball2.velocityY = 0;
+        player1.velocityX = 0;
+        player1.velocityY = 0;
+        player2.velocityX = 0;
+        player2.velocityY = 0;
+
         if(Gdx.input.isKeyPressed(Keys.LEFT)){
-            if(!((ball1.getX() < brick.getX() + brick.getWidth()) && (brick.getY() < ball1.getY() + ball1.getHeight()) && (ball1.getY() < brick.getY() + brick.getHeight()) && !(ball1.getX() + ball1.getWidth() < brick.getX())))
-                ball1.velocityX -= (200);
+            if(!((player1.getX() < brick.getX() + brick.getWidth()) && (brick.getY() < player1.getY() + player1.getHeight()) && (player1.getY() < brick.getY() + brick.getHeight()) && !(player1.getX() + player1.getWidth() < brick.getX())))
+                player1.velocityX -= (200);
             else {
-                ball1.setPosition(ball1.getX() + 20, ball1.getY());
+                player1.velocityX += 200;
             }
         }
         if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-            if(!(brick.getX() < ball1.getX() + ball1.getWidth() && brick.getY() < ball1.getY() + ball1.getHeight() && ball1.getY() < brick.getY() + brick.getHeight() &&!(ball1.getX() > brick.getX() + brick.getWidth())))
-                ball1.velocityX += 200;
+            if(!(brick.getX() < player1.getX() + player1.getWidth() && brick.getY() < player1.getY() + player1.getHeight() && player1.getY() < brick.getY() + brick.getHeight() &&!(player1.getX() > brick.getX() + brick.getWidth())))
+                player1.velocityX += 200;
             else {
-                ball1.setPosition(ball1.getX() - 20, ball1.getY());
+                player1.velocityX -= 200;
             }
         }
         if(Gdx.input.isKeyPressed(Keys.UP)){
-            if(!(ball1.getY() + ball1.getHeight() >= brick.getY() &&!(ball1.getY() > brick.getY() + brick.getHeight())&& ball1.getX() + ball1.getHeight() > brick.getX() && ball1.getX() + ball1.getHeight() < brick.getX() + brick.getWidth()))
-                ball1.velocityY += (200);
+            if(!(player1.getY() + player1.getHeight() > brick.getY() &&!(player1.getY() > brick.getY() + brick.getHeight())&& player1.getX() + player1.getHeight() > brick.getX() && player1.getX() + player1.getHeight() < brick.getX() + brick.getWidth()))
+                player1.velocityY += (200);
             else {
-                ball1.setPosition(ball1.getX(), ball1.getY() - 20);
+                player1.velocityY -= 200;
             }
         }
         if(Gdx.input.isKeyPressed(Keys.DOWN)){
-            if(!(ball1.getY()  < brick.getY() + brick.getHeight() &&!(ball1.getY() + ball1.getHeight() < brick.getY() )&& ball1.getX() + ball1.getHeight() > brick.getX() && ball1.getX() + ball1.getHeight() < brick.getX() + brick.getWidth()))
-                ball1.velocityY -= (200);
+            if(!(player1.getY()  < brick.getY() + brick.getHeight() &&!(player1.getY() + player1.getHeight() < brick.getY() )&& player1.getX() + player1.getHeight() > brick.getX() && player1.getX() + player1.getHeight() < brick.getX() + brick.getWidth()))
+                player1.velocityY -= (200);
             else {
-                ball1.setPosition(ball1.getX(), ball1.getY() + 20);
+                player1.velocityY += 200;
             }
         }
 
         if(Gdx.input.isKeyPressed(Keys.A)){
-            ball2.velocityX -= (150 + mousey2Speed);
+            player2.velocityX -= (150 + mousey2Speed);
         }
         if(Gdx.input.isKeyPressed(Keys.D)){
-            ball2.velocityX += (150 + mousey2Speed);
+            player2.velocityX += (150 + mousey2Speed);
         }
         if(Gdx.input.isKeyPressed(Keys.W)){
-            ball2.velocityY += (150);
+            player2.velocityY += (150);
         }
         if(Gdx.input.isKeyPressed(Keys.S)){
-            ball2.velocityY -= (150);
+            player2.velocityY -= (150);
         }
         if(Gdx.input.isKeyPressed(Keys.ENTER)){
             mousey2Speed += 150;
         }
 
+        // Escape button
         if(Gdx.input.isKeyPressed(Keys.ESCAPE)){
-            game.setScreen(new Settings(game));
+            game.setScreen(new PausedScreen(game));
         }
 
-        ball1.setX(MathUtils.clamp(ball1.getX(), 0, mapWidth - ball1.getWidth()));
-        ball1.setY(MathUtils.clamp(ball1.getY(), 0, mapHeight - ball1.getHeight()));
+        player1.setX(MathUtils.clamp(player1.getX(), 0, mapWidth - player1.getWidth()));
+        player1.setY(MathUtils.clamp(player1.getY(), 0, mapHeight - player1.getHeight()));
 
-        ball2.setX(MathUtils.clamp(ball2.getX(), 0, mapWidth - ball2.getWidth()));
-        ball2.setY(MathUtils.clamp(ball2.getY(), 0, mapHeight - ball2.getHeight()));
+        player2.setX(MathUtils.clamp(player2.getX(), 0, mapWidth - player2.getWidth()));
+        player2.setY(MathUtils.clamp(player2.getY(), 0, mapHeight - player2.getHeight()));
 
         Rectangle cheeseRectangle = cheese.getBoundingRectangle();
-        Rectangle mousey2Rectangle = ball2.getBoundingRectangle();
+        Rectangle mousey2Rectangle = player2.getBoundingRectangle();
 
         //If 2 rectangle are in the same location
         if(!win && (cheeseRectangle.contains(mouseyRectangle) || cheeseRectangle.contains(mousey2Rectangle))){
@@ -221,15 +269,18 @@ public class CheeseLevel extends BaseScreen{
             timeLabel.setText("Time: " + (int)timeElipsed);
         }
         Camera cam = mainStage.getCamera();
-        cam.position.set(ball1.getX() + ball1.getOriginX(), ball1.getY() + ball1.getOriginY(), 0);
+        cam.position.set(player1.getX() + player1.getOriginX(), player1.getY() + player1.getOriginY(), 0);
         cam.position.x = MathUtils.clamp(cam.position.x, viewWidth / 2, mapWidth - viewWidth / 2);
         cam.position.y = MathUtils.clamp(cam.position.y, viewHeight / 2, mapHeight - viewHeight / 2);
         cam.update();
     }
 
-    private void pauseGame(){
-
-    }
+    // public boolean keyDown(int keycode){
+    //     if(keycode == KEYS.M){
+    //         game.setScreen(new CheeseMenu(game));
+    //     }
+    //     return false;
+    // }
 
     // public boolean isMoveable(){
     //     if(mousey.getX() == brick.getX() - brick.getHeight() || ){

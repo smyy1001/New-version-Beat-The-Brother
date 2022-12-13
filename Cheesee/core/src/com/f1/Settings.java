@@ -52,29 +52,19 @@ public class Settings extends BaseScreen{
         skin = new Skin(Gdx.files.internal("assets/Glassy_UI_Skin/glassyui/glassy-ui.json"));
 
         button1 = new TextButton("Sound",skin,"small");
-        button2 = new TextButton("Full Screen",skin,"small");
 
         soundButton = new CheckBox("", skin);
-        fullScreenButton = new CheckBox("", skin);
-
 
         button1.setSize(120,60);
         button1.setPosition(150,300);
         soundButton.setSize(50, 50);
         soundButton.setPosition(450, 300);
 
-        button2.setSize(120, 60);
-        button2.setPosition(150, 200);
-        fullScreenButton.setSize(50, 50);
-        fullScreenButton.setPosition(450, 200);
-
         background = new BaseActor();
         background.setTexture(new Texture(Gdx.files.internal("assets/blackBackground.jpeg")));
         background.setPosition(0, 0);
         mainStage.addActor(button1);
         mainStage.addActor(soundButton);
-        mainStage.addActor(button2);
-        mainStage.addActor(fullScreenButton);
     }
 
     @Override
@@ -83,8 +73,8 @@ public class Settings extends BaseScreen{
             CheeseLevel.backgroundMusic.stop();
         }
         else{
-            // CheeseLevel.backgroundMusic.play();
-            // CheeseLevel.backgroundMusic.setLooping(true);
+            CheeseLevel.backgroundMusic.play();
+            CheeseLevel.backgroundMusic.setLooping(true);
         }
     }
 }

@@ -164,6 +164,7 @@ public class CheeseMenu implements Screen{
             float touchY = tmp.y;
 
             Rectangle startRect = startButtonSprite.getBoundingRectangle();
+            Rectangle characterRect = charactersButtonSprite.getBoundingRectangle();
             Rectangle exitRect = exitButtonSprite.getBoundingRectangle();
             Rectangle setRect = settingsButtonSprite.getBoundingRectangle();
             if(startRect.contains(touchX, touchY)){
@@ -175,8 +176,8 @@ public class CheeseMenu implements Screen{
             else if(setRect.contains(touchX, touchY)){
                 game.setScreen(new Settings(game));
             }
-            else if(touchX >= charactersButtonSprite.getX() && touchX <= charactersButtonSprite.getX() + charactersButtonSprite.getWidth() && touchY >= charactersButtonSprite.getY() && touchY <= charactersButtonSprite.getY() + charactersButtonSprite.getHeight()){
-          
+            else if(characterRect.contains(touchX, touchY)){
+                game.setScreen(new CharacterScreen(game));
             }
         }
         // if (Gdx.input.isKeyPressed(Keys.TAB)){
