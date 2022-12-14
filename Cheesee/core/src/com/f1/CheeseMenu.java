@@ -87,7 +87,7 @@ public class CheeseMenu implements Screen{
         settingsButtonSprite.setPosition((width / 2f - settingsButtonSprite.getWidth() / 2), width / SETTINGS_VERT_POSITION_FACTOR);
         charactersButtonSprite.setPosition((width / 2f - charactersButtonSprite.getWidth() / 2), width / CHARACTERS_VERT_POSITION_FACTOR);
         //Alpha is setting the transparency
-        backgroundSprite.setSize(width, height);
+        backgroundSprite.setSize(1230, 1230);
         backgroundSprite.setAlpha(0.2f);
     }
 
