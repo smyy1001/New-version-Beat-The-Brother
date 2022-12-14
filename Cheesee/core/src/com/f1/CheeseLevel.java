@@ -1,19 +1,11 @@
 package com.f1;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -23,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.utils.Array;
 
 public class CheeseLevel extends BaseScreen{
     
@@ -37,17 +28,18 @@ public class CheeseLevel extends BaseScreen{
     private float mousey1Speed;
     private float mousey2Speed;
     private BaseActor brick;
-    private BaseActor floor;
     private BaseActor winText;
     private BaseActor cheese;
     private boolean win;
     public static Music backgroundMusic;
     private boolean pausedScreen;
 
+    Maze mazeObj;
+
     private float timeElipsed;
     private Label timeLabel;
-    final int mapWidth = 800;
-    final int mapHeight = 800;
+    final int mapWidth = 780;
+    final int mapHeight = 780;
 
     public CheeseLevel(CheeseGame g){
         super(g);
@@ -69,40 +61,31 @@ public class CheeseLevel extends BaseScreen{
     @Override
     public void create() {
 
+        mazeObj = new Maze(10, 10);
+        mazeObj.generateMaze();
+
         pausedScreen = false;
 
         timeElipsed = 0;
 
-        floor = new BaseActor();
-        floor.setTexture(new Texture(Gdx.files.internal("assets/tiles-800-800.jpg")));
-        floor.setPosition(0, 0);
-        floor.setSize(1500, 1500);
-        mainStage.addActor(floor);
-
-        brick = new BaseActor();
         cheese = new BaseActor();
         cheese.setTexture(new Texture(Gdx.files.internal("assets/cheese.png")));
-        brick.setTexture(new Texture(Gdx.files.internal("assets/brick-11.png")));
         float randX = MathUtils.random(0, viewWidth);
         float randY = MathUtils.random(0, viewHeight);
         cheese.setPosition(randX, randY);
         cheese.setOrigin(cheese.getWidth() / 2, cheese.getHeight() / 2);
-        brick.setPosition(300, 300);
-        brick.setOrigin(brick.getWidth() / 2, brick.getHeight() / 2);
 
         mainStage.addActor(cheese);
-        mainStage.addActor(brick);
-
 
         // The Players
         player1 = new BaseActor();
         player2 = new BaseActor();
         player1.setTexture(new Texture(Gdx.files.internal("blueBall.png")));
         player2.setTexture(new Texture(Gdx.files.internal("purpleBall.png")));
-        player1.setPosition(20, 20);
+        player1.setPosition(40, 40);
         player2.setPosition(500, 20);
-        player1.setSize(75, 75);
-        player2.setSize(75, 75);
+        player1.setSize(50, 50);
+        player2.setSize(50, 50);
         mainStage.addActor(player1);
         mainStage.addActor(player2);
 
@@ -121,14 +104,27 @@ public class CheeseLevel extends BaseScreen{
         uiStage.addActor(timeLabel);
 
         win = false;
+
+        for(int i = 0; i < mazeObj.maze.length; i++){
+            for(int j = 0; j < mazeObj.maze[0].length; j++){
+                if(mazeObj.maze[i][j] == 'X'){
+                    brick = new BaseActor();
+                    brick.setTexture(new Texture(Gdx.files.internal("assets/Brick_gray.jpeg")));
+                    brick.setSize(19.2f, 19.2f);
+                    brick.setPosition(i * 19.2f, j * 19.2f);
+                    brick.setOrigin(brick.getWidth() / 2, brick.getHeight() / 2);
+                    mainStage.addActor(brick);
+                }
+            }
+        }
     }
 
     public void setPlayer( int playerNum, String texture) { //!      
         if(playerNum == 1) {
-        player1.setTexture(new Texture(Gdx.files.internal(texture)));
+            player1.setTexture(new Texture(Gdx.files.internal(texture)));
         }
         else {
-        player2.setTexture(new Texture(Gdx.files.internal(texture)));
+            player2.setTexture(new Texture(Gdx.files.internal(texture)));
         }
     }
 
@@ -144,6 +140,9 @@ public class CheeseLevel extends BaseScreen{
             player1.velocityY = 0;
             player2.velocityX = 0;
             player2.velocityY = 0;
+
+            int indexX = (int)(player1.getX() / 19.02);
+            int indexY = (int)(player1.getY() / 19.02);
 
             // First Player
             if(Gdx.input.isKeyPressed(Keys.LEFT)){ // Left
@@ -310,9 +309,6 @@ public class CheeseLevel extends BaseScreen{
         }
     }
 
-
-
-
     public void handlePause(){
 
         if(Gdx.input.isKeyPressed(Keys.M) ){
@@ -329,4 +325,3 @@ public class CheeseLevel extends BaseScreen{
             Gdx.app.exit();
         }
     }
-}
