@@ -1,15 +1,19 @@
 package com.f1;
+
 import java.util.ArrayList;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
-public class Characters {
-        // Attributes 
-        private String userName;
-        private int colorNum;//1-Red 2-Blue 3-Green 4-Purple
-        private char c;
-        private float speed;
-        private ArrayList<Orb> orbInventory;
+public class Characters extends BaseActor {
 
-    Characters( String userName, char c, int color ) {
+    // Attributes 
+    private String userName;
+    private float speed;
+    private ArrayList<Orb> orbInventory;
+    boolean textureChanged = false;
+
+    // The Constructor
+    Characters( String userName) {
         setSpeed();
         setInventory();
     }
@@ -18,6 +22,7 @@ public class Characters {
     private void setInventory() {
         orbInventory = new ArrayList<Orb>();
     }
+    
     // Adding and removing Orbs
     public void addOrbToInventory(Orb o) {
         orbInventory.add(o);
@@ -27,7 +32,7 @@ public class Characters {
     }
 
     // Setter of the Speed
-    private void setSpeed() {
+    private void setSpeed() { //* the speed methods will be important when we implement the speed orb
         this.speed = 5; //! the number is just an example
     }
 
@@ -36,10 +41,13 @@ public class Characters {
         this.speed+=speed;
     }
 
-    // Getters for each private attribute
-    public char getC() {
-        return c;
+    // updating the Texture
+    void updateTexture(String tx) {
+        setTexture(new Texture(Gdx.files.internal(tx)));
+        textureChanged = true;
     }
+
+    // Getters for each private attribute
     public float getSpeed() {
         return speed;
     }
@@ -48,8 +56,5 @@ public class Characters {
     }
     public ArrayList<Orb> getInventory() {
         return orbInventory;
-    }
-    public int getColor() {
-        return colorNum;
     }
 }

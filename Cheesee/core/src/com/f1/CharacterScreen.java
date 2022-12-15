@@ -1,17 +1,8 @@
 package com.f1;
-import com.badlogic.gdx.Game;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -25,7 +16,6 @@ public class CharacterScreen extends BaseScreen {
     private Label player1;
     private Label player2;
     private Button startButton;
-    private BaseActor backGround;
     private BaseActor red1;
     private BaseActor red2;    
     private BaseActor blue1;    
@@ -44,6 +34,7 @@ public class CharacterScreen extends BaseScreen {
     private CheckBox charChoose6;
     private CheckBox charChoose7;
     private CheckBox charChoose8;
+    Label mainMenu;
 
     // constructor
     public CharacterScreen(CheeseGame g) {
@@ -52,16 +43,10 @@ public class CharacterScreen extends BaseScreen {
     }
 
     @Override
-    public boolean keyTyped(char character) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+    public boolean keyTyped(char character) {return false;}
 
     @Override
-    public boolean scrolled(float amountX, float amountY) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+    public boolean scrolled(float amountX, float amountY) {return false;}
 
     @Override
     public void create() {
@@ -89,12 +74,6 @@ public class CharacterScreen extends BaseScreen {
         charChoose2.setPosition(300, 100);
         charChoose3.setPosition(450, 100);
         charChoose4.setPosition(600, 100);
-
-        // The Background
-        backGround = new BaseActor();
-        backGround.setTexture(new Texture(Gdx.files.internal("assets/universe.jpg")));
-        backGround.setPosition(0, 0);
-        backGround.setSize(800, 800);
 
         // The Characters
         blue1 = new BaseActor();
@@ -146,9 +125,13 @@ public class CharacterScreen extends BaseScreen {
         player2.setColor(com.badlogic.gdx.graphics.Color.WHITE);
         player1.setPosition(10,600 );
         player2.setPosition(10, 250);
+        // Main Menu Warning
+        mainMenu = new Label("Press M to display the Main Menu", skin);
+        mainMenu.setPosition(235,350);
+        mainMenu.setColor(com.badlogic.gdx.graphics.Color.GOLDENROD);
+        mainMenu.setSize(150, 80);
 
         // Adding all actors
-        mainStage.addActor(backGround);
         mainStage.addActor(charChoose);
         mainStage.addActor(charChoose2);
         mainStage.addActor(charChoose3);
@@ -168,6 +151,7 @@ public class CharacterScreen extends BaseScreen {
         mainStage.addActor(purple1);
         mainStage.addActor(purple2);
         mainStage.addActor(startButton);
+        mainStage.addActor(mainMenu);
     }
 
     @Override
@@ -190,10 +174,10 @@ public class CharacterScreen extends BaseScreen {
             }
             for(int a = 0; a < 4; a++) {
                 if(firstPlayer == 1 && player1[a].isChecked()) {
-                    // CheeseLevel.setPlayer(1,playerName1[a]);
+                    CheeseLevel.player1.updateTexture(playerName1[a]);
                 }
                 if(secondPlayer == 1 && player2[a].isChecked()) {
-                    // CheeseLevel.setPlayer(2,playerName1[a]);
+                    CheeseLevel.player2.updateTexture(playerName2[a]);
                 }
             }
             if(firstPlayer == 1 && secondPlayer == 1) {game.setScreen(new CheeseLevel(game));}
