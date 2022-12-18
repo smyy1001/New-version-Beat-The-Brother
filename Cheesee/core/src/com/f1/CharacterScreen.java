@@ -3,8 +3,6 @@ package com.f1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -12,20 +10,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class CharacterScreen extends BaseScreen {
 
+    // Attributes
     CheeseGame game;
+    private Skin skin;
+    private Label mainMenu;
     private Label player1;
     private Label player2;
-    private Button startButton;
+    private TextButton startButton;
     private BaseActor red1;
-    private BaseActor red2;    
-    private BaseActor blue1;    
-    private BaseActor blue2;    
-    private BaseActor green1;    
-    private BaseActor green2;    
-    private BaseActor purple1;    
-    private BaseActor purple2;    
-    Vector3 tmp = new Vector3();
-    Skin skin;
+    private BaseActor red2;
+    private BaseActor blue1;
+    private BaseActor blue2;
+    private BaseActor green1;
+    private BaseActor green2;
+    private BaseActor purple1;
+    private BaseActor purple2;
     private CheckBox charChoose;
     private CheckBox charChoose2;
     private CheckBox charChoose3;
@@ -34,7 +33,6 @@ public class CharacterScreen extends BaseScreen {
     private CheckBox charChoose6;
     private CheckBox charChoose7;
     private CheckBox charChoose8;
-    Label mainMenu;
 
     // constructor
     public CharacterScreen(CheeseGame g) {
@@ -43,17 +41,22 @@ public class CharacterScreen extends BaseScreen {
     }
 
     @Override
-    public boolean keyTyped(char character) {return false;}
+    public boolean keyTyped(char character) {
+        return false;
+    }
 
     @Override
-    public boolean scrolled(float amountX, float amountY) {return false;}
+    public boolean scrolled(float amountX, float amountY) {
+        return false;
+    }
 
     @Override
     public void create() {
+        // The Skin
         skin = new Skin(Gdx.files.internal("assets/Glassy_UI_Skin/glassyui/glassy-ui.json"));
 
         // Start Button
-        startButton = new TextButton("START!",skin,"small");
+        startButton = new TextButton("START!", skin, "small");
         startButton.setSize(120, 50);
         startButton.setPosition(340, 20);
 
@@ -117,17 +120,17 @@ public class CharacterScreen extends BaseScreen {
         purple2.setSize(120, 120);
 
         // The Headings
-        player1 = new Label("Player-1",skin);
-        player2 = new Label("Player-2",skin);
+        player1 = new Label("Player-1", skin);
+        player2 = new Label("Player-2", skin);
         player1.setSize(200, 200);
         player2.setSize(200, 200);
         player1.setColor(com.badlogic.gdx.graphics.Color.WHITE);
         player2.setColor(com.badlogic.gdx.graphics.Color.WHITE);
-        player1.setPosition(10,600 );
+        player1.setPosition(10, 600);
         player2.setPosition(10, 250);
         // Main Menu Warning
         mainMenu = new Label("Press M to display the Main Menu", skin);
-        mainMenu.setPosition(235,350);
+        mainMenu.setPosition(235, 350);
         mainMenu.setColor(com.badlogic.gdx.graphics.Color.GOLDENROD);
         mainMenu.setSize(150, 80);
 
@@ -156,37 +159,46 @@ public class CharacterScreen extends BaseScreen {
 
     @Override
     public void update(float dt) {
-        CheckBox[] player1 = {charChoose5, charChoose6, charChoose7, charChoose8};
-        CheckBox[] player2 = {charChoose, charChoose2, charChoose3, charChoose4};
-        String[] playerName1 = {"assets/blueBall.png","assets/greenBall.png","assets/redBall.png","assets/purpleBall.png"};
-        String[] playerName2 = {"assets/blueBall.png","assets/greenBall.png","assets/redBall.png","assets/purpleBall.png"};
-        
-        //! make these two work
-        if( Gdx.input.isKeyPressed(Keys.M) ) {
+        CheckBox[] player1 = { charChoose5, charChoose6, charChoose7, charChoose8 };
+        CheckBox[] player2 = { charChoose, charChoose2, charChoose3, charChoose4 };
+        String[] playerName1 = { "assets/blueBall.png", "assets/greenBall.png", "assets/redBall.png",
+                "assets/purpleBall.png" };
+        String[] playerName2 = { "assets/blueBall.png", "assets/greenBall.png", "assets/redBall.png",
+                "assets/purpleBall.png" };
+
+        if (Gdx.input.isKeyPressed(Keys.M)) {
             game.setScreen(new CheeseMenu(game));
         }
-        if( startButton.isChecked() ) {
+        if (startButton.isChecked()) {
             int firstPlayer = 0;
             int secondPlayer = 0;
-            for(int i = 0; i < 4; i++) {
-                if(player1[i].isChecked()) {firstPlayer++;}
-                if(player2[i].isChecked()) {secondPlayer++;}
+            for (int i = 0; i < 4; i++) {
+                if (player1[i].isChecked()) {
+                    firstPlayer++;
+                }
+                if (player2[i].isChecked()) {
+                    secondPlayer++;
+                }
             }
-            for(int a = 0; a < 4; a++) {
-                if(firstPlayer == 1 && player1[a].isChecked()) {
+            for (int a = 0; a < 4; a++) {
+                if (firstPlayer == 1 && player1[a].isChecked()) {
                     CheeseLevel.player1.updateTexture(playerName1[a]);
+                    // CheeseLevel.player1.updateUserName("");
                 }
-                if(secondPlayer == 1 && player2[a].isChecked()) {
+                if (secondPlayer == 1 && player2[a].isChecked()) {
                     CheeseLevel.player2.updateTexture(playerName2[a]);
+                    // CheeseLevel.player2.updateUserName("");
                 }
             }
-            if(firstPlayer == 1 && secondPlayer == 1) {game.setScreen(new CheeseLevel(game));}
+            if (firstPlayer == 1 && secondPlayer == 1) {
+                game.setScreen(new CheeseLevel(game));
+            }
         }
-        //! by tonight
 
         // the first player chooses a character
-        if(charChoose5.isChecked()) {
-            if(!(charChoose.isChecked()||charChoose2.isChecked()||charChoose3.isChecked()||charChoose4.isChecked())) {
+        if (charChoose5.isChecked()) {
+            if (!(charChoose.isChecked() || charChoose2.isChecked() || charChoose3.isChecked()
+                    || charChoose4.isChecked())) {
                 charChoose.setVisible(false);
                 charChoose.remove();
                 charChoose6.remove();
@@ -194,19 +206,20 @@ public class CharacterScreen extends BaseScreen {
                 charChoose8.remove();
                 blue1.setVisible(false);
                 blue1.remove();
-            }
-            else {
-                for(int i = 0; i < 4; i++) {
-                    if(player2[i].isChecked()) {
-                        for(int a = 0; a < 4; a++) {
-                            if(a!=0 && a!=i) {player1[a].remove();}
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (player2[i].isChecked()) {
+                        for (int a = 0; a < 4; a++) {
+                            if (a != 0 && a != i) {
+                                player1[a].remove();
+                            }
                         }
                     }
                 }
             }
-        }
-        else if( charChoose6.isChecked() ) {
-            if(!(charChoose.isChecked()||charChoose2.isChecked()||charChoose3.isChecked()||charChoose4.isChecked())) {
+        } else if (charChoose6.isChecked()) {
+            if (!(charChoose.isChecked() || charChoose2.isChecked() || charChoose3.isChecked()
+                    || charChoose4.isChecked())) {
                 charChoose2.setVisible(false);
                 charChoose2.remove();
                 charChoose5.remove();
@@ -214,20 +227,22 @@ public class CharacterScreen extends BaseScreen {
                 charChoose8.remove();
                 green1.setVisible(false);
                 green1.remove();
-            }
-            else {
-                for(int i = 0; i < 4; i++) {
-                    if(player2[i].isChecked()) {
-                        for(int a = 0; a < 4; a++) {
-                            if(a!=1 && a!=i) {player1[a].remove();}
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (player2[i].isChecked()) {
+                        for (int a = 0; a < 4; a++) {
+                            if (a != 1 && a != i) {
+                                player1[a].remove();
+                            }
                         }
                     }
                 }
             }
         }
 
-        else if(charChoose7.isChecked()) {
-            if(!(charChoose.isChecked()||charChoose2.isChecked()||charChoose3.isChecked()||charChoose4.isChecked())) {
+        else if (charChoose7.isChecked()) {
+            if (!(charChoose.isChecked() || charChoose2.isChecked() || charChoose3.isChecked()
+                    || charChoose4.isChecked())) {
                 charChoose3.setVisible(false);
                 charChoose3.remove();
                 charChoose5.remove();
@@ -235,20 +250,22 @@ public class CharacterScreen extends BaseScreen {
                 charChoose8.remove();
                 red1.setVisible(false);
                 red1.remove();
-            }
-            else {
-                for(int i = 0; i < 4; i++) {
-                    if(player2[i].isChecked()) {
-                        for(int a = 0; a < 4; a++) {
-                            if(a!=2 && a!=i) {player1[a].remove();}
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (player2[i].isChecked()) {
+                        for (int a = 0; a < 4; a++) {
+                            if (a != 2 && a != i) {
+                                player1[a].remove();
+                            }
                         }
                     }
                 }
             }
         }
 
-        else if(charChoose8.isChecked()) {
-            if(!(charChoose.isChecked()||charChoose2.isChecked()||charChoose3.isChecked()||charChoose4.isChecked())) {
+        else if (charChoose8.isChecked()) {
+            if (!(charChoose.isChecked() || charChoose2.isChecked() || charChoose3.isChecked()
+                    || charChoose4.isChecked())) {
                 charChoose4.setVisible(false);
                 charChoose4.remove();
                 charChoose5.remove();
@@ -256,12 +273,13 @@ public class CharacterScreen extends BaseScreen {
                 charChoose7.remove();
                 purple1.setVisible(false);
                 purple1.remove();
-            }
-            else {
-                for(int i = 0; i < 4; i++) {
-                    if(player2[i].isChecked()) {
-                        for(int a = 0; a < 4; a++) {
-                            if(a!=3 && a!=i) {player1[a].remove();}
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (player2[i].isChecked()) {
+                        for (int a = 0; a < 4; a++) {
+                            if (a != 3 && a != i) {
+                                player1[a].remove();
+                            }
                         }
                     }
                 }
@@ -269,8 +287,9 @@ public class CharacterScreen extends BaseScreen {
         }
 
         // if the second player chooses first
-        if(charChoose.isChecked()) {
-            if(!(charChoose8.isChecked()||charChoose5.isChecked()||charChoose6.isChecked()||charChoose7.isChecked())) {
+        if (charChoose.isChecked()) {
+            if (!(charChoose8.isChecked() || charChoose5.isChecked() || charChoose6.isChecked()
+                    || charChoose7.isChecked())) {
                 charChoose5.setVisible(false);
                 charChoose5.remove();
                 charChoose4.remove();
@@ -278,20 +297,22 @@ public class CharacterScreen extends BaseScreen {
                 charChoose3.remove();
                 blue2.setVisible(false);
                 blue2.remove();
-            }
-            else {
-                for(int i = 0; i < 4; i++) {
-                    if(player1[i].isChecked()) {
-                        for(int a = 0; a < 4; a++) {
-                            if(a!=0 && a!=i) {player2[a].remove();}
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (player1[i].isChecked()) {
+                        for (int a = 0; a < 4; a++) {
+                            if (a != 0 && a != i) {
+                                player2[a].remove();
+                            }
                         }
                     }
                 }
             }
         }
 
-        else if(charChoose2.isChecked()) {
-            if(!(charChoose8.isChecked()||charChoose5.isChecked()||charChoose6.isChecked()||charChoose7.isChecked())) {
+        else if (charChoose2.isChecked()) {
+            if (!(charChoose8.isChecked() || charChoose5.isChecked() || charChoose6.isChecked()
+                    || charChoose7.isChecked())) {
                 charChoose6.setVisible(false);
                 charChoose6.remove();
                 charChoose4.remove();
@@ -299,20 +320,22 @@ public class CharacterScreen extends BaseScreen {
                 charChoose3.remove();
                 green2.setVisible(false);
                 green2.remove();
-            }
-            else {
-                for(int i = 0; i < 4; i++) {
-                    if(player1[i].isChecked()) {
-                        for(int a = 0; a < 4; a++) {
-                            if(a!=1 && a!=i) {player2[a].remove();}
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (player1[i].isChecked()) {
+                        for (int a = 0; a < 4; a++) {
+                            if (a != 1 && a != i) {
+                                player2[a].remove();
+                            }
                         }
                     }
                 }
             }
         }
 
-        else if(charChoose3.isChecked()) {
-            if(!(charChoose8.isChecked()||charChoose5.isChecked()||charChoose6.isChecked()||charChoose7.isChecked())) {
+        else if (charChoose3.isChecked()) {
+            if (!(charChoose8.isChecked() || charChoose5.isChecked() || charChoose6.isChecked()
+                    || charChoose7.isChecked())) {
                 charChoose7.setVisible(false);
                 charChoose7.remove();
                 charChoose.remove();
@@ -320,20 +343,22 @@ public class CharacterScreen extends BaseScreen {
                 charChoose2.remove();
                 red2.setVisible(false);
                 red2.remove();
-            }
-            else {
-                for(int i = 0; i < 4; i++) {
-                    if(player1[i].isChecked()) {
-                        for(int a = 0; a < 4; a++) {
-                            if(a!=2 && a!=i) {player2[a].remove();}
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (player1[i].isChecked()) {
+                        for (int a = 0; a < 4; a++) {
+                            if (a != 2 && a != i) {
+                                player2[a].remove();
+                            }
                         }
                     }
                 }
             }
         }
 
-        else if(charChoose4.isChecked()) {
-            if(!(charChoose8.isChecked()||charChoose5.isChecked()||charChoose6.isChecked()||charChoose7.isChecked())) {
+        else if (charChoose4.isChecked()) {
+            if (!(charChoose8.isChecked() || charChoose5.isChecked() || charChoose6.isChecked()
+                    || charChoose7.isChecked())) {
                 charChoose8.setVisible(false);
                 charChoose8.remove();
                 charChoose.remove();
@@ -341,12 +366,13 @@ public class CharacterScreen extends BaseScreen {
                 charChoose3.remove();
                 purple2.setVisible(false);
                 purple2.remove();
-            }
-            else {
-                for(int i = 0; i < 4; i++) {
-                    if(player1[i].isChecked()) {
-                        for(int a = 0; a < 4; a++) {
-                            if(a!=3 && a!=i) {player2[a].remove();}
+            } else {
+                for (int i = 0; i < 4; i++) {
+                    if (player1[i].isChecked()) {
+                        for (int a = 0; a < 4; a++) {
+                            if (a != 3 && a != i) {
+                                player2[a].remove();
+                            }
                         }
                     }
                 }
@@ -354,7 +380,7 @@ public class CharacterScreen extends BaseScreen {
         }
 
         // if the first user changes his/her mind
-        if(!charChoose5.isChecked()&&!charChoose.isVisible()&&!blue1.isVisible()) {
+        if (!charChoose5.isChecked() && !charChoose.isVisible() && !blue1.isVisible()) {
             charChoose.setVisible(true);
             blue1.setVisible(true);
             mainStage.addActor(charChoose);
@@ -362,8 +388,7 @@ public class CharacterScreen extends BaseScreen {
             mainStage.addActor(charChoose7);
             mainStage.addActor(charChoose8);
             mainStage.addActor(blue1);
-        }
-        else if(!charChoose6.isChecked()&&!charChoose2.isVisible()&&!green1.isVisible()) {
+        } else if (!charChoose6.isChecked() && !charChoose2.isVisible() && !green1.isVisible()) {
             charChoose2.setVisible(true);
             green1.setVisible(true);
             mainStage.addActor(charChoose2);
@@ -371,8 +396,7 @@ public class CharacterScreen extends BaseScreen {
             mainStage.addActor(charChoose7);
             mainStage.addActor(charChoose8);
             mainStage.addActor(green1);
-        }
-        else if(!charChoose7.isChecked()&&!charChoose3.isVisible()&&!red1.isVisible()) {
+        } else if (!charChoose7.isChecked() && !charChoose3.isVisible() && !red1.isVisible()) {
             charChoose3.setVisible(true);
             red1.setVisible(true);
             mainStage.addActor(charChoose3);
@@ -380,8 +404,7 @@ public class CharacterScreen extends BaseScreen {
             mainStage.addActor(charChoose5);
             mainStage.addActor(charChoose8);
             mainStage.addActor(red1);
-        }
-        else if(!charChoose8.isChecked()&&!charChoose4.isVisible()&&!purple1.isVisible()) {
+        } else if (!charChoose8.isChecked() && !charChoose4.isVisible() && !purple1.isVisible()) {
             charChoose4.setVisible(true);
             purple1.setVisible(true);
             mainStage.addActor(charChoose4);
@@ -392,7 +415,7 @@ public class CharacterScreen extends BaseScreen {
         }
 
         // if the second player changes his/her mind
-        if(!charChoose.isChecked()&&!charChoose5.isVisible()&&!blue2.isVisible()) {
+        if (!charChoose.isChecked() && !charChoose5.isVisible() && !blue2.isVisible()) {
             charChoose5.setVisible(true);
             blue2.setVisible(true);
             mainStage.addActor(charChoose5);
@@ -400,8 +423,7 @@ public class CharacterScreen extends BaseScreen {
             mainStage.addActor(charChoose3);
             mainStage.addActor(charChoose4);
             mainStage.addActor(blue2);
-        }
-        else if(!charChoose2.isChecked()&&!charChoose6.isVisible()&&!green2.isVisible()) {
+        } else if (!charChoose2.isChecked() && !charChoose6.isVisible() && !green2.isVisible()) {
             charChoose6.setVisible(true);
             green2.setVisible(true);
             mainStage.addActor(charChoose6);
@@ -409,8 +431,7 @@ public class CharacterScreen extends BaseScreen {
             mainStage.addActor(charChoose3);
             mainStage.addActor(charChoose4);
             mainStage.addActor(green2);
-        }
-        else if(!charChoose3.isChecked()&&!charChoose7.isVisible()&&!red2.isVisible()) {
+        } else if (!charChoose3.isChecked() && !charChoose7.isVisible() && !red2.isVisible()) {
             charChoose7.setVisible(true);
             red2.setVisible(true);
             mainStage.addActor(charChoose7);
@@ -418,8 +439,7 @@ public class CharacterScreen extends BaseScreen {
             mainStage.addActor(charChoose);
             mainStage.addActor(charChoose4);
             mainStage.addActor(red2);
-        }
-        else if(!charChoose4.isChecked()&&!charChoose8.isVisible()&&!purple2.isVisible()) {
+        } else if (!charChoose4.isChecked() && !charChoose8.isVisible() && !purple2.isVisible()) {
             charChoose8.setVisible(true);
             purple2.setVisible(true);
             mainStage.addActor(charChoose8);
@@ -430,4 +450,3 @@ public class CharacterScreen extends BaseScreen {
         }
     }
 }
-    

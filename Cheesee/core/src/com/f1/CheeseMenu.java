@@ -6,178 +6,107 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-
 public class CheeseMenu implements Screen{
     SpriteBatch batch;
-    OrthographicCamera camera;
-
-    Texture startButtonTexture;
-    Texture exitButtonTexture;
-    // Texture settingsButtonTexture;
-    Texture backgroundTexture;
-    Texture charactersButtonTexture;
     Sprite startButtonSprite;
+    Rectangle startRect;
     Sprite exitButtonSprite;
+    Rectangle exitRect;
     Sprite charactersButtonSprite;
-    // Sprite settingsButtonSprite;
+    Rectangle characterRect;
     Sprite backgroundSprite;
-
-    private static float BUTTON_RESIZE_FACTOR = 800f;
-    private static float START_VERT_POSITION_FACTOR = 2.2f;
-    // private static float SETTINGS_VERT_POSITION_FACTOR = 2.8f;
-    private static float CHARACTERS_VERT_POSITION_FACTOR = 3.7f;
-    private static float EXIT_VERT_POSITION_FACTOR = 6.5f;
-
     CheeseGame game;
 
     //Input coordinations
     Vector3 tmp = new Vector3();
 
     public CheeseMenu(CheeseGame game){
+        this.game = game;
 
+        // Background
         CheeseLevel.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/backgroundSong.mp3"));
         CheeseLevel.backgroundMusic.setLooping(true);
         CheeseLevel.backgroundMusic.play();
 
-        this.game = game;
-
-        //Dimensions of the viewPoints
-        float height = Gdx.graphics.getHeight();
-        float width = Gdx.graphics.getWidth();
-
-        camera = new OrthographicCamera(width, height);
-
-        camera.setToOrtho(false);
-
         batch = new SpriteBatch();
-        startButtonTexture = new Texture(Gdx.files.internal("assets/startButton.png"));
-        exitButtonTexture = new Texture(Gdx.files.internal("assets/exit.png"));
-        charactersButtonTexture = new Texture(Gdx.files.internal("assets/charactersButton.png"));
-        // settingsButtonTexture = new Texture(Gdx.files.internal("assets/settings.png"));
-        backgroundTexture = new Texture(Gdx.files.internal("assets/background.png"));
 
-        charactersButtonSprite = new Sprite(charactersButtonTexture);
-        startButtonSprite = new Sprite(startButtonTexture);
-        exitButtonSprite = new Sprite(exitButtonTexture);
-        // settingsButtonSprite = new Sprite(settingsButtonTexture);
-        backgroundSprite = new Sprite(backgroundTexture);
+        // Textures
+        charactersButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/charactersButton.png")));
+        startButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/startButton.png")));
+        exitButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/exit.png")));
+        backgroundSprite = new Sprite(new Texture(Gdx.files.internal("assets/background.png")));
 
         //Size our objects into position
+        startButtonSprite.setSize(225, 100);
+        exitButtonSprite.setSize(100, 100);
+        charactersButtonSprite.setSize(300, 80);
 
-        startButtonSprite.setSize(startButtonSprite.getWidth() * (width / BUTTON_RESIZE_FACTOR) / 6, startButtonSprite.getHeight() * (width / BUTTON_RESIZE_FACTOR) / 6);
-        exitButtonSprite.setSize(exitButtonSprite.getWidth() * (width / BUTTON_RESIZE_FACTOR) / 6, exitButtonSprite.getHeight() * (width / BUTTON_RESIZE_FACTOR) / 6);
-        // settingsButtonSprite.setSize(settingsButtonSprite.getWidth() * (width / BUTTON_RESIZE_FACTOR) / 6, settingsButtonSprite.getHeight() * (width / BUTTON_RESIZE_FACTOR) / 6);
-        charactersButtonSprite.setSize(charactersButtonSprite.getWidth() * (width / BUTTON_RESIZE_FACTOR) / 3, charactersButtonSprite.getHeight() * (width / BUTTON_RESIZE_FACTOR) / 3);
-
-        startButtonSprite.setPosition((width / 2f - startButtonSprite.getWidth() / 2), width / START_VERT_POSITION_FACTOR);
-        exitButtonSprite.setPosition((width / 2f - exitButtonSprite.getWidth() / 2), width / EXIT_VERT_POSITION_FACTOR);
-        // settingsButtonSprite.setPosition((width / 2f - settingsButtonSprite.getWidth() / 2), width / SETTINGS_VERT_POSITION_FACTOR);
-        charactersButtonSprite.setPosition((width / 2f - charactersButtonSprite.getWidth() / 2), width / CHARACTERS_VERT_POSITION_FACTOR);
+        // Positions
+        startButtonSprite.setPosition(1366/2 - startButtonSprite.getWidth()/2, 450);
+        exitButtonSprite.setPosition(1366/2 - exitButtonSprite.getWidth()/2, 150);
+        charactersButtonSprite.setPosition(1366/2 - charactersButtonSprite.getWidth()/2, 300);
+        
         //Alpha is setting the transparency
-        backgroundSprite.setSize(1230, 1230);
+        backgroundSprite.setSize(1366, 768);
         backgroundSprite.setAlpha(0.2f);
     }
 
-
+    // Overridden methods
     @Override
-    public void show() {
-        // TODO Auto-generated method stub
-        
+    public void show() {}
+    @Override
+    public void resize(int width, int height) {}
+    @Override
+    public void pause() {}
+    @Override
+    public void resume() {}
+    @Override
+    public void hide() {}
+    @Override
+    public void dispose() {
+        batch.dispose();
     }
 
 
+    // Drawing the Sprites
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(camera.combined);
-
         batch.begin();
         backgroundSprite.draw(batch);
         startButtonSprite.draw(batch);
-        // settingsButtonSprite.draw(batch);
-        exitButtonSprite.draw(batch);
         charactersButtonSprite.draw(batch);
+        exitButtonSprite.draw(batch);
         batch.end();
 
         handleTouch();
     }
 
-
-    @Override
-    public void resize(int width, int height) {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-    @Override
-    public void pause() {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-    @Override
-    public void resume() {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-    @Override
-    public void hide() {
-        // TODO Auto-generated method stub
-        
-    }
-
-
-    @Override
-    public void dispose() {
-        startButtonTexture.dispose();
-        exitButtonTexture.dispose();
-        // settingsButtonTexture.dispose();
-        charactersButtonTexture.dispose();
-        batch.dispose();
-    }
-
+    // Handling interactions on the screen
     void handleTouch(){
         if(Gdx.input.justTouched()){
             tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-
-            camera.unproject(tmp);
             float touchX = tmp.x;
             float touchY = tmp.y;
 
-            Rectangle startRect = startButtonSprite.getBoundingRectangle();
-            Rectangle characterRect = charactersButtonSprite.getBoundingRectangle();
-            Rectangle exitRect = exitButtonSprite.getBoundingRectangle();
-            // Rectangle setRect = settingsButtonSprite.getBoundingRectangle();
-            if(startRect.contains(touchX, touchY)){
-                game.setScreen(new CheeseLevel(game));
-            }
-            else if(exitRect.contains(touchX, touchY)){
+            startRect = startButtonSprite.getBoundingRectangle();
+            characterRect = charactersButtonSprite.getBoundingRectangle();
+            exitRect = exitButtonSprite.getBoundingRectangle();
+
+            if(exitRect.contains(touchX,touchY)) {
                 Gdx.app.exit();
             }
-            // else if(setRect.contains(touchX, touchY)){
-            //     game.setScreen(new Settings(game));
-            // }
+            else if(startRect.contains(touchX, touchY)) {
+                game.setScreen(new CheeseLevel(game));
+            }
             else if(characterRect.contains(touchX, touchY)){
                 game.setScreen(new CharacterScreen(game));
             }
         }
-        // if (Gdx.input.isKeyPressed(Keys.TAB)){
-        //     Boolean fullScreen = Gdx.graphics.isFullscreen();
-        //         Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
-        //         if (fullScreen == true)
-        //             Gdx.graphics.setWindowedMode(currentMode.width, currentMode.height);
-        //         else
-        //             Gdx.graphics.setFullscreenMode(currentMode);
-        // }
     }
 }

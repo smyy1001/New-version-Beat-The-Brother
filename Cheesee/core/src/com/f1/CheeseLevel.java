@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 public class CheeseLevel extends BaseScreen {
 
     CheeseGame game;
-    ArrayList<BaseActor> bricks;
+    ArrayList<Rectangle> bricks;
     static Characters player1 = new Characters("Player1");
     static Characters player2 = new Characters("Player2");
     private Button pauseExitButton;
@@ -30,8 +30,8 @@ public class CheeseLevel extends BaseScreen {
     private Button pauseContinueButton;
     private BaseActor blackBackground;
     private Label pauseMainMenu;
-    private float mousey1Speed;
-    private float mousey2Speed;
+    // private float mousey1Speed;
+    // private float mousey2Speed;
     private BaseActor brick;
     private BaseActor winText;
     private BaseActor cheese;
@@ -39,16 +39,16 @@ public class CheeseLevel extends BaseScreen {
     public static Music backgroundMusic;
     private boolean pausedScreen;
     maze mazeObj;
-    private float timeElipsed;
+    private float timeElapsed;
     private Label timeLabel;
-    final int mapWidth = 780;
-    final int mapHeight = 780;
+    final int mapWidth = 1366;
+    final int mapHeight = 758;
 
     public CheeseLevel(CheeseGame g) {
         super(g);
         this.game = g;
-        bricks = new ArrayList<BaseActor>();
-        mazeObj = new maze(10, 10);
+        bricks = new ArrayList<Rectangle>();
+        mazeObj = new maze(10,5);
         mazeObj.generateMaze();
         for (int i = 0; i < mazeObj.maze.length; i++) {
             for (int j = 0; j < mazeObj.maze[0].length; j++) {
@@ -56,9 +56,10 @@ public class CheeseLevel extends BaseScreen {
                     brick = new BaseActor();
                     brick.setTexture(new Texture(Gdx.files.internal("assets/Brick_gray.jpeg")));
                     brick.setSize(19.2f, 19.2f);
-                    brick.setPosition(i * 19.2f, j * 19.2f);
-                    brick.setOrigin(brick.getWidth() / 2, brick.getHeight() / 2);
-                    bricks.add(brick);
+                    brick.setPosition(i * brick.getWidth(), j * brick.getHeight());
+                    brick.setOrigin(brick.getWidth() / 2, brick.getHeight() / 2); //! why do we need this
+                    // Rectangle brickRec = new Rectangle(brick.getX(), brick.getY(), 19.2f, 19.2f);
+                    // bricks.add(brickRec); // The ArrayList containing all the bricks 
                     mainStage.addActor(brick);
                 }
             }
@@ -80,7 +81,7 @@ public class CheeseLevel extends BaseScreen {
 
         pausedScreen = false;
 
-        timeElipsed = 0;
+        timeElapsed = 0;
 
         cheese = new BaseActor();
         cheese.setTexture(new Texture(Gdx.files.internal("assets/cheese.png")));
@@ -92,16 +93,16 @@ public class CheeseLevel extends BaseScreen {
         mainStage.addActor(cheese);
 
         // The Players
-        if(!player1.textureChanged) {
+        if (!player1.textureChanged) {
             player1.setTexture(new Texture(Gdx.files.internal("assets/redBall.png")));
         }
-        if(!player2.textureChanged) {
+        if (!player2.textureChanged) {
             player2.setTexture(new Texture(Gdx.files.internal("assets/blueBall.png")));
         }
         player1.setPosition(20, 20);
         player2.setPosition(725, 20);
-        player1.setSize(40, 40);
-        player2.setSize(40, 40);
+        player1.setSize(35, 35);
+        player2.setSize(35, 35);
         mainStage.addActor(player1);
         mainStage.addActor(player2);
 
@@ -123,7 +124,6 @@ public class CheeseLevel extends BaseScreen {
         win = false;
     }
 
-
     @Override
     public void update(float dt) {
 
@@ -138,101 +138,29 @@ public class CheeseLevel extends BaseScreen {
             player2.velocityX = 0;
             player2.velocityY = 0;
 
-            int indexX = (int) (player1.getX() / 19.02);
-            int indexY = (int) (player1.getY() / 19.02);
+            // int indexX = (int) (player1.getX() / 19.02);
+            // int indexY = (int) (player1.getY() / 19.02);
 
-            for (int i = 0; i < bricks.size(); i++) {
-                // First Player
-                if (Gdx.input.isKeyPressed(Keys.LEFT)) { // Left
-                    if (player1.getY() + 65 > bricks.get(i).getY()
-                            && player1.getY() + 10 < bricks.get(i).getY() + bricks.get(i).getHeight()) {
-                        if (!player1Rectangle.contains(bricks.get(i).getX() + bricks.get(i).getWidth(),
-                                player1.getY())) {
-                            player1.velocityX -= (150);
-                        }
-                    } else {
-                        player1.velocityX -= (150);
-                    }
-                }
-                if (Gdx.input.isKeyPressed(Keys.RIGHT)) { // Right
-                    if (player1.getY() + 65 > bricks.get(i).getY()
-                            && player1.getY() + 10 < bricks.get(i).getY() + bricks.get(i).getHeight()) {
-                        if (!player1Rectangle.contains(bricks.get(i).getX(), player1.getY())) {
-                            player1.velocityX += (150);
-                        }
-                    }
-
-                    else {
-                        player1.velocityX += (150);
-                    }
-                }
-                if (Gdx.input.isKeyPressed(Keys.UP)) { // Up
-                    if (player1.getX() + 65 > bricks.get(i).getX()
-                            && player1.getX() + 10 < bricks.get(i).getX() + bricks.get(i).getWidth()) {
-                        if (!player1Rectangle.contains(player1.getX(), bricks.get(i).getY())) {
-                            player1.velocityY += (150);
-                        }
-                    } else {
-                        player1.velocityY += (150);
-                    }
-                }
-                if (Gdx.input.isKeyPressed(Keys.DOWN)) { // Down
-                    if (player1.getX() + 65 > bricks.get(i).getX()
-                            && player1.getX() + 10 < bricks.get(i).getX() + bricks.get(i).getWidth()) {
-                        if (!player1Rectangle.contains(player1.getX(),
-                                bricks.get(i).getY() + bricks.get(i).getHeight())) {
-                            player1.velocityY -= (150);
-                        }
-                    } else {
-                        player1.velocityY -= (150);
-                    }
-                }
-
-                // Second Player
-                if (Gdx.input.isKeyPressed(Keys.A)) { // Left
-                    if (player2.getY() + 65 > bricks.get(i).getY()
-                            && player2.getY() + 10 < bricks.get(i).getY() + bricks.get(i).getHeight()) {
-                        if (!player2REctangle.contains(bricks.get(i).getX() + bricks.get(i).getWidth(),
-                                player2.getY())) {
-                            player2.velocityX -= (150);
-                        }
-                    } else {
-                        player2.velocityX -= (150);
-                    }
-                }
-                if (Gdx.input.isKeyPressed(Keys.D)) { // Right
-                    if (player2.getY() + 65 > bricks.get(i).getY()
-                            && player2.getY() + 10 < bricks.get(i).getY() + bricks.get(i).getHeight()) {
-                        if (!player2REctangle.contains(bricks.get(i).getX(), player2.getY())) {
-                            player2.velocityX += (150);
-                        }
-                    } else {
-                        player2.velocityX += (150);
-                    }
-                }
-                if (Gdx.input.isKeyPressed(Keys.W)) { // Up
-                    if (player2.getX() + 65 > bricks.get(i).getX()
-                            && player2.getX() + 10 < bricks.get(i).getX() + bricks.get(i).getWidth()) {
-                        if (!player2REctangle.contains(player2.getX(), bricks.get(i).getY())) {
-                            player2.velocityY += (150);
-                        }
-                    } else {
-                        player2.velocityY += (150);
-                    }
-                }
-                if (Gdx.input.isKeyPressed(Keys.S)) { // Down
-                    if (player2.getX() + 65 > bricks.get(i).getX()
-                            && player2.getX() + 10 < bricks.get(i).getX() + bricks.get(i).getWidth()) {
-                        if (!player2REctangle.contains(player2.getX(),
-                                bricks.get(i).getY() + bricks.get(i).getHeight())) {
-                            player2.velocityY -= (150);
-                        }
-                    } else {
-                        player2.velocityY -= (150);
-                    }
-                }
+            // First Player
+            if (Gdx.input.isKeyPressed(Keys.LEFT)) { // Left
             }
-            
+
+            if (Gdx.input.isKeyPressed(Keys.RIGHT)) { // Right
+            }
+            if (Gdx.input.isKeyPressed(Keys.UP)) { // Up
+            }
+            if (Gdx.input.isKeyPressed(Keys.DOWN)) { // Down
+            }
+
+            // Second Player
+            if (Gdx.input.isKeyPressed(Keys.A)) { // Left
+            }
+            if (Gdx.input.isKeyPressed(Keys.D)) { // Right
+            }
+            if (Gdx.input.isKeyPressed(Keys.W)) { // Up
+            }
+            if (Gdx.input.isKeyPressed(Keys.S)) { // Down
+            }
 
             // Escape button
             if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
@@ -260,13 +188,13 @@ public class CheeseLevel extends BaseScreen {
                 mainStage.addActor(pauseMainMenu);
 
                 soundButton = new CheckBox("", skin);
-                soundButton.setPosition(450, 550);
-                soundButton.setSize(50,50);
+                soundButton.setPosition(480, 550);
+                soundButton.setSize(50, 50);
                 mainStage.addActor(soundButton);
-        
-                sound = new TextButton("SOUND OFF",skin,"small");
-                sound.setPosition(235, 550);
-                sound.setSize(180,60);
+
+                sound = new TextButton("SOUND OFF", skin, "small");
+                sound.setPosition(265, 550);
+                sound.setSize(180, 60);
                 mainStage.addActor(sound);
             }
 
@@ -277,12 +205,11 @@ public class CheeseLevel extends BaseScreen {
             player2.setY(MathUtils.clamp(player2.getY(), 0, mapHeight - player2.getHeight()));
 
             Rectangle cheeseRectangle = cheese.getBoundingRectangle();
-            Rectangle mousey2Rectangle = player2.getBoundingRectangle();
 
             // If 2 rectangle are in the same location
-            if (!win && (cheeseRectangle.contains(player1Rectangle) || cheeseRectangle.contains(mousey2Rectangle))) {
-                mousey1Speed += 100;
-                mousey2Speed += 50;
+            if (!win && (cheeseRectangle.contains(player1Rectangle) || cheeseRectangle.contains(player2REctangle))) {
+                // mousey1Speed += 100;
+                // mousey2Speed += 50;
                 win = true;
                 // Disappearing of the cheese
                 Action spinShrinkFadeOut = Actions.parallel(
@@ -311,9 +238,10 @@ public class CheeseLevel extends BaseScreen {
                 // winText.setVisible(true);
             }
             if (!win) {
-                timeElipsed += dt;
-                timeLabel.setText("Time: " + (int) timeElipsed);
+                timeElapsed += dt;
+                timeLabel.setText("Time: " + (int) timeElapsed);
             }
+
         }
         // if pause == true
         else {
@@ -332,15 +260,17 @@ public class CheeseLevel extends BaseScreen {
             pauseContinueButton.remove();
             pauseMainMenu.remove();
             blackBackground.remove();
+            sound.remove();
+            soundButton.remove();
         }
         if (pauseExitButton.isPressed()) {
             Gdx.app.exit();
         }
         // about the background music
-        if(soundButton.isChecked()){
+        if (soundButton.isChecked()) {
             CheeseLevel.backgroundMusic.stop();
-        }
-        else{
+            CheeseLevel.backgroundMusic.setLooping(false);
+        } else {
             CheeseLevel.backgroundMusic.play();
             CheeseLevel.backgroundMusic.setLooping(true);
         }

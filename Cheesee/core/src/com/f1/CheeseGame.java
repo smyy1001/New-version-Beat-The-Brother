@@ -4,8 +4,9 @@ import com.badlogic.gdx.Gdx;
 
 public class CheeseGame extends Game{
     public void create(){
-        Gdx.graphics.setWindowedMode(1230, 1230);
+        Gdx.graphics.setWindowedMode(1366, 768);
         CheeseMenu cm = new CheeseMenu(this);
         setScreen(cm);
+        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
     }
 }
