@@ -1,7 +1,6 @@
 package com.f1;
 
 import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
@@ -13,24 +12,30 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.utils.Array;
 
 public class CheeseLevel extends BaseScreen {
 
     CheeseGame game;
     ArrayList<BaseActor> bricks;
+    ArrayList<BaseActor> orbs = new ArrayList<BaseActor>();
     static Characters player1 = new Characters("Player1");
     static Characters player2 = new Characters("Player2");
     private Button pauseExitButton;
+    private Button sound;
+    private CheckBox soundButton;
     private Button pauseContinueButton;
     private BaseActor blackBackground;
     private Label pauseMainMenu;
     private float mousey1Speed;
     private float mousey2Speed;
     private BaseActor brick;
+    private BaseActor orb;
     private BaseActor winText;
     private BaseActor cheese;
     private boolean win;
@@ -48,19 +53,8 @@ public class CheeseLevel extends BaseScreen {
         bricks = new ArrayList<BaseActor>();
         mazeObj = new maze(10, 10);
         mazeObj.generateMaze();
-        for (int i = 0; i < mazeObj.maze.length; i++) {
-            for (int j = 0; j < mazeObj.maze[0].length; j++) {
-                if (mazeObj.maze[i][j] == 'X') {
-                    brick = new BaseActor();
-                    brick.setTexture(new Texture(Gdx.files.internal("assets/Brick_gray.jpeg")));
-                    brick.setSize(19.2f, 19.2f);
-                    brick.setPosition(i * 19.2f, j * 19.2f);
-                    brick.setOrigin(brick.getWidth() / 2, brick.getHeight() / 2);
-                    bricks.add(brick);
-                    mainStage.addActor(brick);
-                }
-            }
-        }
+        generateTextures(mazeObj);
+        
     }
 
     @Override
@@ -256,6 +250,16 @@ public class CheeseLevel extends BaseScreen {
                 pauseMainMenu.setPosition(260, 200);
                 pauseMainMenu.setSize(100, 100);
                 mainStage.addActor(pauseMainMenu);
+
+                soundButton = new CheckBox("", skin);
+                soundButton.setPosition(450, 550);
+                soundButton.setSize(50,50);
+                mainStage.addActor(soundButton);
+        
+                sound = new TextButton("SOUND OFF",skin,"small");
+                sound.setPosition(235, 550);
+                sound.setSize(180,60);
+                mainStage.addActor(sound);
             }
 
             player1.setX(MathUtils.clamp(player1.getX(), 0, mapWidth - player1.getWidth()));
@@ -324,5 +328,66 @@ public class CheeseLevel extends BaseScreen {
         if (pauseExitButton.isPressed()) {
             Gdx.app.exit();
         }
+        // about the background music
+        if(soundButton.isChecked()){
+            CheeseLevel.backgroundMusic.stop();
+        }
+        else{
+            CheeseLevel.backgroundMusic.play();
+            CheeseLevel.backgroundMusic.setLooping(true);
+        }
+    }
+
+    public void generateTextures(maze mazeObj) {
+        // TODO add the textures for start and end
+        for (int i = 0; i < mazeObj.maze.length; i++) {
+            for (int j = 0; j < mazeObj.maze[0].length; j++) {
+                switch (mazeObj.maze[i][j]) {
+                    case 'X':
+                        brick = generateBaseActor(i, j, "assets/Brick_gray.jpeg");
+                        bricks.add(brick);
+                        break;
+
+                    case '1':
+                        orb = generateBaseActor(i, j, "assets/Orb_Blind.png");
+                        orbs.add(orb);
+                        break;
+                
+                    case '2':
+                        orb = generateBaseActor(i, j, "assets/Orb_Freeze.png");
+                        orbs.add(orb);
+                        break;
+                    
+                    case '3':
+                        orb = generateBaseActor(i, j, "assets/Orb_Brick.png");
+                        orbs.add(orb);
+                        break;
+                
+                    case '4':
+                        orb = generateBaseActor(i, j, "assets/Orb_Slow.png");
+                        orbs.add(orb);
+                        break; 
+                    
+                    case '5':
+                        orb = generateBaseActor(i, j, "assets/Orb_Speed.png");
+                        orbs.add(orb);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+    }
+
+    private BaseActor generateBaseActor(int gridX, int gridY, String pathToTexture) {
+        BaseActor returnObj = new BaseActor();
+        returnObj.setTexture(new Texture(Gdx.files.internal(pathToTexture)));
+        returnObj.setSize(19.2f, 19.2f);
+        returnObj.setPosition(gridX * 19.2f, gridY * 19.2f);
+        returnObj.setOrigin(returnObj.getWidth() / 2, returnObj.getHeight() / 2);
+        mainStage.addActor(returnObj);
+        return returnObj;
     }
 }

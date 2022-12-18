@@ -1,23 +1,14 @@
 package com.f1;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-
-import java.util.Vector;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Keys;
 
 
 public class CheeseMenu implements Screen{
@@ -26,18 +17,18 @@ public class CheeseMenu implements Screen{
 
     Texture startButtonTexture;
     Texture exitButtonTexture;
-    Texture settingsButtonTexture;
+    // Texture settingsButtonTexture;
     Texture backgroundTexture;
     Texture charactersButtonTexture;
     Sprite startButtonSprite;
     Sprite exitButtonSprite;
     Sprite charactersButtonSprite;
-    Sprite settingsButtonSprite;
+    // Sprite settingsButtonSprite;
     Sprite backgroundSprite;
 
     private static float BUTTON_RESIZE_FACTOR = 800f;
     private static float START_VERT_POSITION_FACTOR = 2.2f;
-    private static float SETTINGS_VERT_POSITION_FACTOR = 2.8f;
+    // private static float SETTINGS_VERT_POSITION_FACTOR = 2.8f;
     private static float CHARACTERS_VERT_POSITION_FACTOR = 3.7f;
     private static float EXIT_VERT_POSITION_FACTOR = 6.5f;
 
@@ -66,25 +57,25 @@ public class CheeseMenu implements Screen{
         startButtonTexture = new Texture(Gdx.files.internal("assets/startButton.png"));
         exitButtonTexture = new Texture(Gdx.files.internal("assets/exit.png"));
         charactersButtonTexture = new Texture(Gdx.files.internal("assets/charactersButton.png"));
-        settingsButtonTexture = new Texture(Gdx.files.internal("assets/settings.png"));
+        // settingsButtonTexture = new Texture(Gdx.files.internal("assets/settings.png"));
         backgroundTexture = new Texture(Gdx.files.internal("assets/background.png"));
 
         charactersButtonSprite = new Sprite(charactersButtonTexture);
         startButtonSprite = new Sprite(startButtonTexture);
         exitButtonSprite = new Sprite(exitButtonTexture);
-        settingsButtonSprite = new Sprite(settingsButtonTexture);
+        // settingsButtonSprite = new Sprite(settingsButtonTexture);
         backgroundSprite = new Sprite(backgroundTexture);
 
         //Size our objects into position
 
         startButtonSprite.setSize(startButtonSprite.getWidth() * (width / BUTTON_RESIZE_FACTOR) / 6, startButtonSprite.getHeight() * (width / BUTTON_RESIZE_FACTOR) / 6);
         exitButtonSprite.setSize(exitButtonSprite.getWidth() * (width / BUTTON_RESIZE_FACTOR) / 6, exitButtonSprite.getHeight() * (width / BUTTON_RESIZE_FACTOR) / 6);
-        settingsButtonSprite.setSize(settingsButtonSprite.getWidth() * (width / BUTTON_RESIZE_FACTOR) / 6, settingsButtonSprite.getHeight() * (width / BUTTON_RESIZE_FACTOR) / 6);
+        // settingsButtonSprite.setSize(settingsButtonSprite.getWidth() * (width / BUTTON_RESIZE_FACTOR) / 6, settingsButtonSprite.getHeight() * (width / BUTTON_RESIZE_FACTOR) / 6);
         charactersButtonSprite.setSize(charactersButtonSprite.getWidth() * (width / BUTTON_RESIZE_FACTOR) / 3, charactersButtonSprite.getHeight() * (width / BUTTON_RESIZE_FACTOR) / 3);
 
         startButtonSprite.setPosition((width / 2f - startButtonSprite.getWidth() / 2), width / START_VERT_POSITION_FACTOR);
         exitButtonSprite.setPosition((width / 2f - exitButtonSprite.getWidth() / 2), width / EXIT_VERT_POSITION_FACTOR);
-        settingsButtonSprite.setPosition((width / 2f - settingsButtonSprite.getWidth() / 2), width / SETTINGS_VERT_POSITION_FACTOR);
+        // settingsButtonSprite.setPosition((width / 2f - settingsButtonSprite.getWidth() / 2), width / SETTINGS_VERT_POSITION_FACTOR);
         charactersButtonSprite.setPosition((width / 2f - charactersButtonSprite.getWidth() / 2), width / CHARACTERS_VERT_POSITION_FACTOR);
         //Alpha is setting the transparency
         backgroundSprite.setSize(1230, 1230);
@@ -109,7 +100,7 @@ public class CheeseMenu implements Screen{
         batch.begin();
         backgroundSprite.draw(batch);
         startButtonSprite.draw(batch);
-        settingsButtonSprite.draw(batch);
+        // settingsButtonSprite.draw(batch);
         exitButtonSprite.draw(batch);
         charactersButtonSprite.draw(batch);
         batch.end();
@@ -150,7 +141,7 @@ public class CheeseMenu implements Screen{
     public void dispose() {
         startButtonTexture.dispose();
         exitButtonTexture.dispose();
-        settingsButtonTexture.dispose();
+        // settingsButtonTexture.dispose();
         charactersButtonTexture.dispose();
         batch.dispose();
     }
@@ -166,16 +157,16 @@ public class CheeseMenu implements Screen{
             Rectangle startRect = startButtonSprite.getBoundingRectangle();
             Rectangle characterRect = charactersButtonSprite.getBoundingRectangle();
             Rectangle exitRect = exitButtonSprite.getBoundingRectangle();
-            Rectangle setRect = settingsButtonSprite.getBoundingRectangle();
+            // Rectangle setRect = settingsButtonSprite.getBoundingRectangle();
             if(startRect.contains(touchX, touchY)){
                 game.setScreen(new CheeseLevel(game));
             }
             else if(exitRect.contains(touchX, touchY)){
                 Gdx.app.exit();
             }
-            else if(setRect.contains(touchX, touchY)){
-                game.setScreen(new Settings(game));
-            }
+            // else if(setRect.contains(touchX, touchY)){
+            //     game.setScreen(new Settings(game));
+            // }
             else if(characterRect.contains(touchX, touchY)){
                 game.setScreen(new CharacterScreen(game));
             }

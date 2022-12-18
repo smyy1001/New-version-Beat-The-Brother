@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class AnimatedActor extends BaseActor{
     public float elapsedTime;
-    public Animation anim;
+    public Animation<TextureRegion> anim;
 
     public AnimatedActor(){
         super();
