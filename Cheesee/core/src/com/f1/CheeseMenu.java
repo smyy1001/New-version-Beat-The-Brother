@@ -4,12 +4,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 public class CheeseMenu implements Screen{
+    
+    // Attributes 
     SpriteBatch batch;
     Sprite startButtonSprite;
     Rectangle startRect;
@@ -21,7 +23,7 @@ public class CheeseMenu implements Screen{
     CheeseGame game;
 
     //Input coordinations
-    Vector3 tmp = new Vector3();
+    Vector2 tmp = new Vector2();
 
     public CheeseMenu(CheeseGame game){
         this.game = game;
@@ -34,24 +36,24 @@ public class CheeseMenu implements Screen{
         batch = new SpriteBatch();
 
         // Textures
-        charactersButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/charactersButton.png")));
-        startButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/startButton.png")));
+        charactersButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/character.png")));
+        startButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/start.png")));
         exitButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/exit.png")));
-        backgroundSprite = new Sprite(new Texture(Gdx.files.internal("assets/background.png")));
+        backgroundSprite = new Sprite(new Texture(Gdx.files.internal("assets/background2.png")));
 
         //Size our objects into position
-        startButtonSprite.setSize(225, 100);
-        exitButtonSprite.setSize(100, 100);
-        charactersButtonSprite.setSize(300, 80);
+        startButtonSprite.setSize(330, 100);
+        exitButtonSprite.setSize(330, 100);
+        charactersButtonSprite.setSize(330, 110);
 
         // Positions
-        startButtonSprite.setPosition(1366/2 - startButtonSprite.getWidth()/2, 450);
-        exitButtonSprite.setPosition(1366/2 - exitButtonSprite.getWidth()/2, 150);
-        charactersButtonSprite.setPosition(1366/2 - charactersButtonSprite.getWidth()/2, 300);
+        startButtonSprite.setPosition(1366/2 - startButtonSprite.getWidth()/2, 420);
+        exitButtonSprite.setPosition(1366/2 - exitButtonSprite.getWidth()/2, 100);
+        charactersButtonSprite.setPosition(1366/2 - charactersButtonSprite.getWidth()/2, 260);
         
         //Alpha is setting the transparency
         backgroundSprite.setSize(1366, 768);
-        backgroundSprite.setAlpha(0.2f);
+        backgroundSprite.setAlpha(0.9f);
     }
 
     // Overridden methods
@@ -90,9 +92,9 @@ public class CheeseMenu implements Screen{
     // Handling interactions on the screen
     void handleTouch(){
         if(Gdx.input.justTouched()){
-            tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            tmp.set(Gdx.input.getX(), Gdx.input.getY());
             float touchX = tmp.x;
-            float touchY = tmp.y;
+            float touchY = 768-tmp.y;
 
             startRect = startButtonSprite.getBoundingRectangle();
             characterRect = charactersButtonSprite.getBoundingRectangle();
