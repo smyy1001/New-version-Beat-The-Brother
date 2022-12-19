@@ -253,6 +253,7 @@ public class CheeseLevel extends BaseScreen {
     public void handlePause() {
         if (Gdx.input.isKeyPressed(Keys.M)) {
             game.setScreen(new CheeseMenu(game));
+            Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
         }
         if (pauseContinueButton.isPressed()) {
             pausedScreen = false;
