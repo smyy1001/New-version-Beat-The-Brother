@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 public class CheeseLevel extends BaseScreen {
 
     CheeseGame game;
-    ArrayList<Rectangle> bricks;
+    ArrayList<BaseActor> bricks;
     ArrayList<BaseActor> orbs = new ArrayList<BaseActor>();
     static Characters player1 = new Characters("Player1");
     static Characters player2 = new Characters("Player2");
@@ -49,11 +49,13 @@ public class CheeseLevel extends BaseScreen {
     public CheeseLevel(CheeseGame g) {
         super(g);
         this.game = g;
-        bricks = new ArrayList<Rectangle>();
-        mazeObj = new maze(10,5);
+        bricks = new ArrayList<BaseActor>();
+        int mazeHeight = 10;
+        int mazeWidth = 5;
+
+        mazeObj = new maze(mazeHeight,mazeWidth);
         mazeObj.generateMaze();
-        generateTextures(mazeObj);
-        
+        generateTextures(mazeObj);        
     }
 
     @Override
@@ -128,28 +130,85 @@ public class CheeseLevel extends BaseScreen {
             player2.velocityX = 0;
             player2.velocityY = 0;
 
+            float previousX= player1.getX();
+            float previousY= player1.getY();
+            float previousX2= player2.getX();
+            float previousY2= player2.getY();
             // int indexX = (int) (player1.getX() / 19.02);
             // int indexY = (int) (player1.getY() / 19.02);
 
             // First Player
-            if (Gdx.input.isKeyPressed(Keys.LEFT)) { // Left
+            if(Gdx.input.isKeyPressed(Keys.LEFT)){
+                if( isBrick(player1.getX(), player1.getY(), 'L',player1) ){
+                    player1.velocityX = 0;//previousX;
+                }else{
+                    player1.velocityX -= (50);
+                    previousX = player1.velocityX;
+                }
             }
 
-            if (Gdx.input.isKeyPressed(Keys.RIGHT)) { // Right
+            if(Gdx.input.isKeyPressed(Keys.RIGHT)){
+                if( isBrick(player1.getX(), player1.getY(), 'R',player1) ){
+                    player1.velocityX = 0;//previousX;
+                }else{
+                    player1.velocityX += (50);
+                    previousX = player1.velocityX;
+                }
             }
-            if (Gdx.input.isKeyPressed(Keys.UP)) { // Up
+
+            if(Gdx.input.isKeyPressed(Keys.UP)){
+                if( isBrick(player1.getX(), player1.getY(), 'U',player1) ){
+                    player1.velocityY = 0;//previousY;            
+                }else{
+                    player1.velocityY += (50);
+                    previousY = player1.velocityY;
+                }
             }
-            if (Gdx.input.isKeyPressed(Keys.DOWN)) { // Down
+
+            if(Gdx.input.isKeyPressed(Keys.DOWN)){
+                if( isBrick(player1.getX(), player1.getY(), 'D',player1) ){
+                    player1.velocityY = 0;//previousY;
+                }else{
+                    player1.velocityY -= (50);
+                    previousY = player1.velocityY;
+                }
             }
 
             // Second Player
-            if (Gdx.input.isKeyPressed(Keys.A)) { // Left
+            if(Gdx.input.isKeyPressed(Keys.A)){
+                if( isBrick(player2.getX(), player2.getY(), 'L',player2) ){
+                    player2.velocityX = previousX2;
+                }else{
+                    player2.velocityX -= (50);
+                    previousX2 = player2.velocityX;
+                }
             }
-            if (Gdx.input.isKeyPressed(Keys.D)) { // Right
+
+            if(Gdx.input.isKeyPressed(Keys.D)){
+                if( isBrick(player2.getX(), player2.getY(), 'R',player2) ){
+                    player2.velocityX = 0;//previousX;
+                }else{
+                    player2.velocityX += (50);
+                    previousX2 = player2.velocityX;
+                }
             }
-            if (Gdx.input.isKeyPressed(Keys.W)) { // Up
+
+            if(Gdx.input.isKeyPressed(Keys.W)){
+                if( isBrick(player2.getX(), player2.getY(), 'U',player2) ){
+                    player2.velocityY = 0;//previousY;            
+                }else{
+                    player2.velocityY += (50);
+                    previousY2 = player2.velocityY;
+                }
             }
-            if (Gdx.input.isKeyPressed(Keys.S)) { // Down
+
+            if(Gdx.input.isKeyPressed(Keys.S)){
+                if( isBrick(player2.getX(), player2.getY(), 'D',player2) ){
+                    player2.velocityY = previousY2;
+                }else{
+                    player2.velocityY -= (50);
+                    previousY2 = player2.velocityY;
+                }
             }
 
             // Escape button
@@ -267,38 +326,83 @@ public class CheeseLevel extends BaseScreen {
         }
     }
 
+    public boolean isBrick(double xBall, double yBall, char direction, Characters player){
+        double mapXInd = xBall/19.2;
+        double mapYInd = yBall/19.2 ; 
+        double playerSize = player.getWidth()/19.2 ;
+
+        if('U' == direction){                                                                                  
+            if(mazeObj.mirroredMaze[(int)(mapYInd+playerSize)][(int)(mapXInd+ playerSize/2)] !=  'X' ){
+                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
+                return false;
+            }else{
+                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
+                return true;
+            }
+
+        }else if('D'== direction){
+
+            if(mazeObj.mirroredMaze[(int)mapYInd][(int)(mapXInd+ playerSize/2)] !=  'X' ){
+                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
+                return false;
+            }else{
+                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
+                return true;
+            }
+
+        }else if('R'== direction){
+
+            if(mazeObj.mirroredMaze[(int)(mapYInd+ playerSize/2)][(int)(mapXInd+ playerSize)] !=  'X'){
+                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
+                return false;
+            }else{
+                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
+                return true;
+            }
+
+        }else{
+            if(mazeObj.mirroredMaze[(int)(mapYInd+ playerSize/2)][(int)mapXInd] !=  'X' ){
+                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
+                return false;
+            }else{
+                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
+                return true;
+            }
+        }
+    }
+
     public void generateTextures(maze mazeObj) {
         // TODO add the textures for start and end
-        for (int i = 0; i < mazeObj.maze.length; i++) {
-            for (int j = 0; j < mazeObj.maze[0].length; j++) {
-                switch (mazeObj.maze[i][j]) {
+        for (int i = 0; i < mazeObj.mirroredMaze.length; i++) {
+            for (int j = 0; j < mazeObj.mirroredMaze[0].length; j++) {
+                switch (mazeObj.mirroredMaze[i][j]) {
                     case 'X':
-                        brick = generateBaseActor(i, j, "assets/Brick_gray.jpeg");
+                        brick = generateBaseActor(j, i, "assets/Brick_gray.jpeg");
                         // bricks.add(brick);
                         break;
 
                     case '1':
-                        orb = generateBaseActor(i, j, "assets/Orb_Blind.png");
+                        orb = generateBaseActor(j, i, "assets/Orb_Blind.png");
                         orbs.add(orb);
                         break;
                 
                     case '2':
-                        orb = generateBaseActor(i, j, "assets/Orb_Freeze.png");
+                        orb = generateBaseActor(j, i, "assets/Orb_Freeze.png");
                         orbs.add(orb);
                         break;
                     
                     case '3':
-                        orb = generateBaseActor(i, j, "assets/Orb_Brick.png");
+                        orb = generateBaseActor(j, i, "assets/Orb_Brick.png");
                         orbs.add(orb);
                         break;
                 
                     case '4':
-                        orb = generateBaseActor(i, j, "assets/Orb_Slow.png");
+                        orb = generateBaseActor(j, i, "assets/Orb_Slow.png");
                         orbs.add(orb);
                         break; 
                     
                     case '5':
-                        orb = generateBaseActor(i, j, "assets/Orb_Speed.png");
+                        orb = generateBaseActor(j, i, "assets/Orb_Speed.png");
                         orbs.add(orb);
                         break;
 

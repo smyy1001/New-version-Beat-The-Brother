@@ -19,6 +19,8 @@ public class maze {
     Integer currentYLocation;
 
     char[][] maze;
+    char[][] mirroredMaze;
+
 
     Random rand = new Random();
     
@@ -308,9 +310,22 @@ public class maze {
 
         // Generation of power-up orbs
         generateOrbs(this);
+        translateToMirroredMaze();
         
     }
 
+    public void translateToMirroredMaze(){
+        mirroredMaze = new char[2*maze.length+3][2*maze[0].length+3];
+
+        for(int y1 = 0; y1< maze.length; y1++){
+            for(int x1 = 0; x1 < maze[0].length; x1++){
+                mirroredMaze[y1][x1] = maze[y1][x1];
+                mirroredMaze[y1][2*maze[0].length -1 - x1] = maze[y1][x1];
+                if( x1 > maze[0].length && x1< maze[0].length +3 )
+                    mirroredMaze[y1][maze[0].length] = 'O';
+            }
+        }
+    }
 
     /**
      * Generates orbs within a maze at empty spaces of the maze ('O' at maze[][]), respecting start and end positions as well. 
