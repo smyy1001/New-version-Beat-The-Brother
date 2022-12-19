@@ -3,4 +3,4 @@ A 2-Player game where each player are trying to complete the maze they are in an
 
 Java and libGDX game engine are used in this project
 
-Contributers Sümeyye Acar 22103640 / Yusuf Toroman / Enes Ağırman / Mehmet Kutay Buyruk / Berin Su İyici
+Contributers Sümeyye Acar 22103640 / Yusuf Toraman / Enes Ağırman / Mehmet Kutay Buyruk / Berin Su İyici
