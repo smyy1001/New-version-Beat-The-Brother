@@ -47,12 +47,12 @@ public class CheeseMenu implements Screen{
         charactersButtonSprite.setSize(330, 110);
 
         // Positions
-        startButtonSprite.setPosition(1366/2 - startButtonSprite.getWidth()/2, 420);
-        exitButtonSprite.setPosition(1366/2 - exitButtonSprite.getWidth()/2, 100);
-        charactersButtonSprite.setPosition(1366/2 - charactersButtonSprite.getWidth()/2, 260);
+        startButtonSprite.setPosition(Gdx.graphics.getWidth()/2 - startButtonSprite.getWidth()/2, 420);
+        exitButtonSprite.setPosition(Gdx.graphics.getWidth()/2 - exitButtonSprite.getWidth()/2, 100);
+        charactersButtonSprite.setPosition(Gdx.graphics.getWidth()/2 - charactersButtonSprite.getWidth()/2, 260);
         
         //Alpha is setting the transparency
-        backgroundSprite.setSize(1366, 768);
+        backgroundSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         backgroundSprite.setAlpha(0.9f);
     }
 
@@ -94,7 +94,7 @@ public class CheeseMenu implements Screen{
         if(Gdx.input.justTouched()){
             tmp.set(Gdx.input.getX(), Gdx.input.getY());
             float touchX = tmp.x;
-            float touchY = 768-tmp.y;
+            float touchY = Gdx.graphics.getHeight() - 1 - tmp.y;
 
             startRect = startButtonSprite.getBoundingRectangle();
             characterRect = charactersButtonSprite.getBoundingRectangle();

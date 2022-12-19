@@ -305,8 +305,41 @@ public class maze {
                 moveRandomly();
             }
         }
+
+        // Generation of power-up orbs
+        generateOrbs(this);
+        
     }
 
 
+    /**
+     * Generates orbs within a maze at empty spaces of the maze ('O' at maze[][]), respecting start and end positions as well. 
+     * The amount of orbs scales with maze size.
+     * @param mazeObj : The input maze to add orbs.
+     */
+    public void generateOrbs(maze mazeObj) {
+        // TODO Making it sensitive to start and end positions
 
+        // orbFrequencyFactor determines how frequent will the orbs be placed ( = 50 -> Roughly an orb for every 50 spaces in maze.)
+        float orbFrequencyFactor = 500;
+        // Determining how many orbs to place for the maze size. Area / OrbPerArea
+        int orbCount = (int)( (mazeObj.MAZE_HEIGHT * mazeObj.MAZE_WIDTH) / orbFrequencyFactor ); 
+
+        // Placement of the orbs
+        int i = 0;
+        while( i < orbCount ) {
+            int orbX = rand.nextInt(mazeObj.MAZE_WIDTH);
+            int orbY = rand.nextInt(mazeObj.MAZE_HEIGHT);
+            if(mazeObj.maze[orbY][orbX] == 'O') {
+                Orb newOrb = Orb.getRandomOrb();
+                // Will get a char 1, 2, 3, 4, 5 depending on the orb type
+                mazeObj.maze[orbY][orbX] = newOrb.getChar();
+                newOrb.setGridX(orbX);
+                newOrb.setGridY(orbY);
+                i++;
+            }
+        }
+    }
+
+    
 }
