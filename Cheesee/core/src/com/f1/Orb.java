@@ -1,7 +1,7 @@
 package com.f1;
 import java.util.Random;
 
-public abstract class Orb {
+public abstract class Orb extends BaseActor{
     /**
      * author Sumeyye Acar
      * 08/12/2022

@@ -55,7 +55,7 @@ public class CheeseLevel extends BaseScreen {
 
         mazeObj = new maze(mazeHeight,mazeWidth);
         mazeObj.generateMaze();
-        generateTextures(mazeObj);        
+        renderTextures(mazeObj);        
     }
 
     @Override
@@ -76,7 +76,7 @@ public class CheeseLevel extends BaseScreen {
         timeElapsed = 0;
 
         cheese = new BaseActor();
-        cheese.setTexture(new Texture(Gdx.files.internal("assets/cheese.png")));
+        cheese.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/cheese.png")));
         float randX = MathUtils.random(0, viewWidth);
         float randY = MathUtils.random(0, viewHeight);
         cheese.setPosition(randX, randY);
@@ -86,10 +86,10 @@ public class CheeseLevel extends BaseScreen {
 
         // The Players
         if (!player1.textureChanged) {
-            player1.setTexture(new Texture(Gdx.files.internal("assets/redBall.png")));
+            player1.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/redBall.png")));
         }
         if (!player2.textureChanged) {
-            player2.setTexture(new Texture(Gdx.files.internal("assets/blueBall.png")));
+            player2.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/blueBall.png")));
         }
         player1.setPosition(20, 20);
         player2.setPosition(725, 20);
@@ -100,7 +100,7 @@ public class CheeseLevel extends BaseScreen {
 
         // "Win" Text
         winText = new BaseActor();
-        winText.setTexture(new Texture(Gdx.files.internal("assets/you-win.png")));
+        winText.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/you-win.png")));
         winText.setPosition(170, 60);
         winText.setVisible(false);
         uiStage.addActor(winText);
@@ -214,9 +214,9 @@ public class CheeseLevel extends BaseScreen {
             // Escape button
             if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                 pausedScreen = true;
-                Skin skin = new Skin(Gdx.files.internal("assets/Glassy_UI_Skin/glassyui/glassy-ui.json"));
+                Skin skin = new Skin(Gdx.files.internal("Cheesee/assets/Glassy_UI_Skin/glassyui/glassy-ui.json"));
                 blackBackground = new BaseActor();
-                blackBackground.setTexture(new Texture(Gdx.files.internal("assets/blackBackground.jpeg")));
+                blackBackground.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/blackBackground.jpeg")));
                 blackBackground.setPosition(0, 0);
                 blackBackground.setSize(Gdx.graphics.getWidth() * 4, Gdx.graphics.getHeight() * 4);
                 mainStage.addActor(blackBackground);
@@ -286,6 +286,9 @@ public class CheeseLevel extends BaseScreen {
                 winText.addAction(fadeInColorCycleForever);
                 // winText.setVisible(true);
             }
+
+            handleOrbs();
+
             if (!win) {
                 timeElapsed += dt;
                 timeLabel.setText("Time: " + (int) timeElapsed);
@@ -297,6 +300,51 @@ public class CheeseLevel extends BaseScreen {
             timeLabel.remove();
             handlePause();
         }
+    }
+
+    /** Checks if orbs are touched and handles their behaviour accordingly. Called on every update(). */
+    public void handleOrbs() {
+
+        // TODO Add seperate behaviour to drop an orb to the ground!!!!!
+        for(BaseActor orb: orbs) 
+        {
+
+            if (orb.getBoundingRectangle().contains(player1.getBoundingRectangle())) {
+                // Pick up and add the orb to inventory, if possible
+                System.out.println("Touching orb " + orb);
+                if(player1.getInventory().isEmpty()) {
+                    player1.getInventory().add( (Orb) orb);
+                    // Make the orb disappear with animation
+                    disappearOrb( (Orb) orb);
+                }
+            }
+
+            if (orb.getBoundingRectangle().contains(player2.getBoundingRectangle())) {
+                // Pick up and add the orb to inventory, if possible
+                System.out.println("Touching orb " + orb);
+                if(player2.getInventory().isEmpty()) {
+                    player2.getInventory().add( (Orb) orb);
+                    // Make the orb disappear with animation
+                    disappearOrb( (Orb) orb);
+                }
+            }
+        }
+        
+    
+    }
+
+    private void disappearOrb(BaseActor orb) {
+        // Disappearing of the orb
+        Action spinShrinkFadeOut = Actions.parallel(
+                // Transparency volume
+                Actions.alpha(1),
+                // Rotate by 360 degrees
+                Actions.rotateBy(360, 1),
+                // Shrink and fade out in 1 second
+                Actions.scaleTo(0, 0, 1),
+                Actions.fadeOut(1) );
+        // Add this action
+        orb.addAction(spinShrinkFadeOut);
     }
 
     public void handlePause() {
@@ -371,38 +419,43 @@ public class CheeseLevel extends BaseScreen {
         }
     }
 
-    public void generateTextures(maze mazeObj) {
+    public void renderTextures(maze mazeObj) {
         // TODO add the textures for start and end
         for (int i = 0; i < mazeObj.mirroredMaze.length; i++) {
             for (int j = 0; j < mazeObj.mirroredMaze[0].length; j++) {
                 switch (mazeObj.mirroredMaze[i][j]) {
                     case 'X':
-                        brick = generateBaseActor(j, i, "assets/Brick_gray.jpeg");
-                        // bricks.add(brick);
+                        brick = generateAndRenderBaseActor(j, i, "Cheesee/assets/Brick_gray.jpeg");
+                    // bricks.add(brick);
                         break;
 
                     case '1':
-                        orb = generateBaseActor(j, i, "assets/Orb_Blind.png");
+                        orb = new BindOrb(i, j);
+                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Blind.png");
                         orbs.add(orb);
                         break;
                 
                     case '2':
-                        orb = generateBaseActor(j, i, "assets/Orb_Freeze.png");
+                        orb = new FreezeOrb(i, j);
+                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Freeze.png");
                         orbs.add(orb);
                         break;
                     
                     case '3':
-                        orb = generateBaseActor(j, i, "assets/Orb_Brick.png");
+                        orb = new BrickOrb(i, j);
+                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Brick.png");
                         orbs.add(orb);
                         break;
                 
                     case '4':
-                        orb = generateBaseActor(j, i, "assets/Orb_Slow.png");
+                        orb = new SlowOrb(i, j);
+                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Slow.png");
                         orbs.add(orb);
                         break; 
                     
                     case '5':
-                        orb = generateBaseActor(j, i, "assets/Orb_Speed.png");
+                        orb = new SpeedOrb(i, j);
+                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Speed.png");
                         orbs.add(orb);
                         break;
 
@@ -414,7 +467,7 @@ public class CheeseLevel extends BaseScreen {
 
     }
 
-    private BaseActor generateBaseActor(int gridX, int gridY, String pathToTexture) {
+    private BaseActor generateAndRenderBaseActor(int gridX, int gridY, String pathToTexture) {
         BaseActor returnObj = new BaseActor();
         returnObj.setTexture(new Texture(Gdx.files.internal(pathToTexture)));
         returnObj.setSize(19.2f, 19.2f);
@@ -423,4 +476,13 @@ public class CheeseLevel extends BaseScreen {
         mainStage.addActor(returnObj);
         return returnObj;
     }
+
+    private void renderBaseActor(BaseActor bActor, int gridX, int gridY, String pathToTexture) {
+        bActor.setTexture(new Texture(Gdx.files.internal(pathToTexture)));
+        bActor.setSize(19.2f, 19.2f);
+        bActor.setPosition(gridX * 19.2f, gridY * 19.2f);
+        bActor.setOrigin(bActor.getWidth() / 2, bActor.getHeight() / 2);
+        mainStage.addActor(bActor);
+    }
+
 }
