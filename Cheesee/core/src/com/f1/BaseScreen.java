@@ -11,7 +11,7 @@ public abstract class BaseScreen implements Screen, InputProcessor{
     protected Game game;
     protected Stage mainStage;
     protected Stage uiStage;
-    public final int viewWidth = 800;
+    public final int viewWidth =1366;
     public final int viewHeight = 800;
 
     //Game is paused or not

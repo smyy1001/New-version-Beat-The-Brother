@@ -29,17 +29,17 @@ public class CheeseMenu implements Screen{
         this.game = game;
 
         // Background
-        CheeseLevel.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Cheesee/assets/backgroundSong.mp3"));
+        CheeseLevel.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/backgroundSong.mp3"));
         CheeseLevel.backgroundMusic.setLooping(true);
         CheeseLevel.backgroundMusic.play();
 
         batch = new SpriteBatch();
 
         // Textures
-        charactersButtonSprite = new Sprite(new Texture(Gdx.files.internal("Cheesee/assets/character.png")));
-        startButtonSprite = new Sprite(new Texture(Gdx.files.internal("Cheesee/assets/start.png")));
-        exitButtonSprite = new Sprite(new Texture(Gdx.files.internal("Cheesee/assets/exit.png")));
-        backgroundSprite = new Sprite(new Texture(Gdx.files.internal("Cheesee/assets/background2.png")));
+        charactersButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/character.png")));
+        startButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/start.png")));
+        exitButtonSprite = new Sprite(new Texture(Gdx.files.internal("assets/exit.png")));
+        backgroundSprite = new Sprite(new Texture(Gdx.files.internal("assets/background2.png")));
 
         //Size our objects into position
         startButtonSprite.setSize(330, 100);

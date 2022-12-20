@@ -28,6 +28,7 @@ public class CheeseLevel extends BaseScreen {
     static Characters player2 = new Characters("Player2");
     private Button pauseExitButton;
     private Button sound;
+    private BaseActor finish;
     private CheckBox soundButton;
     private Button pauseContinueButton;
     private BaseActor blackBackground;
@@ -56,8 +57,8 @@ public class CheeseLevel extends BaseScreen {
         super(g);
         this.game = g;
         bricks = new ArrayList<BaseActor>();
-        int mazeHeight = 10;
-        int mazeWidth = 5;
+        int mazeHeight = 9;
+        int mazeWidth = 8;
         
         slowDown = 80;
         speedUp = 80;
@@ -86,7 +87,7 @@ public class CheeseLevel extends BaseScreen {
         timeElapsed = 0;
 
         cheese = new BaseActor();
-        cheese.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/cheese.png")));
+        cheese.setTexture(new Texture(Gdx.files.internal("assets/cheese.png")));
         float randX = MathUtils.random(0, viewWidth);
         float randY = MathUtils.random(0, viewHeight);
         cheese.setPosition(randX, randY);
@@ -96,10 +97,10 @@ public class CheeseLevel extends BaseScreen {
 
         // The Players
         if (!player1.textureChanged) {
-            player1.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/redBall.png")));
+            player1.setTexture(new Texture(Gdx.files.internal("assets/redBall.png")));
         }
         if (!player2.textureChanged) {
-            player2.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/blueBall.png")));
+            player2.setTexture(new Texture(Gdx.files.internal("assets/blueBall.png")));
         }
         player1.setPosition(20, 20);
         player2.setPosition(725, 20);
@@ -108,9 +109,16 @@ public class CheeseLevel extends BaseScreen {
         mainStage.addActor(player1);
         mainStage.addActor(player2);
 
+        // Finish
+        finish = new BaseActor();
+        finish.setTexture(new Texture(Gdx.files.internal("assets/finish.png")));
+        finish.setSize(90,90);
+        finish.setPosition(Gdx.graphics.getWidth()/2 - 50 - finish.getWidth()/2, 700);
+        mainStage.addActor(finish);
+
         // "Win" Text
         winText = new BaseActor();
-        winText.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/you-win.png")));
+        winText.setTexture(new Texture(Gdx.files.internal("assets/you-win.png")));
         winText.setPosition(170, 60);
         winText.setVisible(false);
         uiStage.addActor(winText);
@@ -120,7 +128,7 @@ public class CheeseLevel extends BaseScreen {
         LabelStyle style = new LabelStyle(font, Color.WHITE);
         timeLabel = new Label(text, style);
         timeLabel.setFontScale(2);
-        timeLabel.setPosition(600, 700);
+        timeLabel.setPosition(850, 740);
         uiStage.addActor(timeLabel);
 
         win = false;
@@ -226,44 +234,44 @@ public class CheeseLevel extends BaseScreen {
             // Escape button
             if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                 pausedScreen = true;
-                Skin skin = new Skin(Gdx.files.internal("Cheesee/assets/Glassy_UI_Skin/glassyui/glassy-ui.json"));
+                Skin skin = new Skin(Gdx.files.internal("assets/Glassy_UI_Skin/glassyui/glassy-ui.json"));
                 blackBackground = new BaseActor();
-                blackBackground.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/blackBackground.jpeg")));
+                blackBackground.setTexture(new Texture(Gdx.files.internal("assets/blackBackground.jpeg")));
                 blackBackground.setPosition(0, 0);
                 blackBackground.setSize(Gdx.graphics.getWidth() * 4, Gdx.graphics.getHeight() * 4);
                 mainStage.addActor(blackBackground);
 
                 pauseExitButton = new TextButton("Exit", skin, "small");
-                pauseExitButton.setPosition(300, 350);
+                pauseExitButton.setPosition(300+283, 350);
                 pauseExitButton.setSize(200, 60);
                 mainStage.addActor(pauseExitButton);
 
                 pauseContinueButton = new TextButton("Continue", skin, "small");
-                pauseContinueButton.setPosition(300, 450);
+                pauseContinueButton.setPosition(300+283, 450);
                 pauseContinueButton.setSize(200, 60);
                 mainStage.addActor(pauseContinueButton);
 
                 pauseMainMenu = new Label("Press M to display the Main Menu", skin);
-                pauseMainMenu.setPosition(260, 200);
+                pauseMainMenu.setPosition(260+283, 200);
                 pauseMainMenu.setSize(100, 100);
                 mainStage.addActor(pauseMainMenu);
 
                 soundButton = new CheckBox("", skin);
-                soundButton.setPosition(480, 550);
+                soundButton.setPosition(480+283, 550);
                 soundButton.setSize(50, 50);
                 mainStage.addActor(soundButton);
 
                 sound = new TextButton("SOUND OFF", skin, "small");
-                sound.setPosition(265, 550);
+                sound.setPosition(265+283, 550);
                 sound.setSize(180, 60);
                 mainStage.addActor(sound);
             }
 
-            player1.setX(MathUtils.clamp(player1.getX(), 0, mapWidth - player1.getWidth()));
-            player1.setY(MathUtils.clamp(player1.getY(), 0, mapHeight - player1.getHeight()));
+            player1.setX(25f);
+            player1.setY(25f);
 
             player2.setX(MathUtils.clamp(player2.getX(), 0, mapWidth - player2.getWidth()));
-            player2.setY(MathUtils.clamp(player2.getY(), 0, mapHeight - player2.getHeight()));
+            player2.setY(25f);
 
             Rectangle cheeseRectangle = cheese.getBoundingRectangle();
 
@@ -447,37 +455,37 @@ public class CheeseLevel extends BaseScreen {
             for (int j = 0; j < mazeObj.mirroredMaze[0].length; j++) {
                 switch (mazeObj.mirroredMaze[i][j]) {
                     case 'X':
-                        brick = generateAndRenderBaseActor(j, i, "Cheesee/assets/Brick_gray.jpeg");
+                        brick = generateAndRenderBaseActor(j, i, "assets/Brick_gray.jpeg");
                     // bricks.add(brick);
                         break;
 
                     case '1':
                         orb = new BindOrb(i, j);
-                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Blind.png");
+                        renderBaseActor(orb, j, i, "assets/Orb_Blind.png");
                         orbs.add(orb);
                         break;
                 
                     case '2':
                         orb = new FreezeOrb(i, j);
-                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Freeze.png");
+                        renderBaseActor(orb, j, i, "assets/Orb_Freeze.png");
                         orbs.add(orb);
                         break;
                     
                     case '3':
                         orb = new BrickOrb(i, j);
-                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Brick.png");
+                        renderBaseActor(orb, j, i, "assets/Orb_Brick.png");
                         orbs.add(orb);
                         break;
                 
                     case '4':
                         orb = new SlowOrb(i, j);
-                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Slow.png");
+                        renderBaseActor(orb, j, i, "assets/Orb_Slow.png");
                         orbs.add(orb);
                         break; 
                     
                     case '5':
                         orb = new SpeedOrb(i, j);
-                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Speed.png");
+                        renderBaseActor(orb, j, i, "assets/Orb_Speed.png");
                         orbs.add(orb);
                         break;
 

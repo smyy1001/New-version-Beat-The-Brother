@@ -58,7 +58,7 @@ public class CharacterScreen extends BaseScreen {
         // Start Button
         startButton = new TextButton("START!", skin, "small");
         startButton.setSize(120, 50);
-        startButton.setPosition(340, 20);
+        startButton.setPosition(340+283, 20);
 
         // Check-Boxes
         charChoose = new CheckBox("", skin);
@@ -69,54 +69,54 @@ public class CharacterScreen extends BaseScreen {
         charChoose6 = new CheckBox("", skin);
         charChoose7 = new CheckBox("", skin);
         charChoose8 = new CheckBox("", skin);
-        charChoose5.setPosition(150, 450);
-        charChoose6.setPosition(300, 450);
-        charChoose7.setPosition(450, 450);
-        charChoose8.setPosition(600, 450);
-        charChoose.setPosition(150, 100);
-        charChoose2.setPosition(300, 100);
-        charChoose3.setPosition(450, 100);
-        charChoose4.setPosition(600, 100);
+        charChoose5.setPosition(150+283, 450);
+        charChoose6.setPosition(300+283, 450);
+        charChoose7.setPosition(450+283, 450);
+        charChoose8.setPosition(600+283, 450);
+        charChoose.setPosition(150+283, 100);
+        charChoose2.setPosition(300+283, 100);
+        charChoose3.setPosition(450+283, 100);
+        charChoose4.setPosition(600+283, 100);
 
         // The Characters
         blue1 = new BaseActor();
         blue1.setTexture(new Texture(Gdx.files.internal("assets/blueBall.png")));
-        blue1.setPosition(100, 140);
+        blue1.setPosition(100+283, 140);
         blue1.setSize(120, 120);
         //
         blue2 = new BaseActor();
         blue2.setTexture(new Texture(Gdx.files.internal("assets/blueBall.png")));
-        blue2.setPosition(100, 490);
+        blue2.setPosition(100+283, 490);
         blue2.setSize(120, 120);
         //
         green1 = new BaseActor();
         green1.setTexture(new Texture(Gdx.files.internal("assets/greenBall.png")));
-        green1.setPosition(250, 140);
+        green1.setPosition(250+283, 140);
         green1.setSize(120, 120);
         //
         green2 = new BaseActor();
         green2.setTexture(new Texture(Gdx.files.internal("assets/greenBall.png")));
-        green2.setPosition(250, 490);
+        green2.setPosition(250+283, 490);
         green2.setSize(120, 120);
         //
         red1 = new BaseActor();
         red1.setTexture(new Texture(Gdx.files.internal("assets/redBall.png")));
-        red1.setPosition(400, 140);
+        red1.setPosition(400+283, 140);
         red1.setSize(120, 120);
         //
         red2 = new BaseActor();
         red2.setTexture(new Texture(Gdx.files.internal("assets/redBall.png")));
-        red2.setPosition(400, 490);
+        red2.setPosition(400+283, 490);
         red2.setSize(120, 120);
         //
         purple1 = new BaseActor();
         purple1.setTexture(new Texture(Gdx.files.internal("assets/purpleBall.png")));
-        purple1.setPosition(550, 140);
+        purple1.setPosition(550+283, 140);
         purple1.setSize(120, 120);
         //
         purple2 = new BaseActor();
         purple2.setTexture(new Texture(Gdx.files.internal("assets/purpleBall.png")));
-        purple2.setPosition(550, 490);
+        purple2.setPosition(550+283, 490);
         purple2.setSize(120, 120);
 
         // The Headings
@@ -126,11 +126,11 @@ public class CharacterScreen extends BaseScreen {
         player2.setSize(200, 200);
         player1.setColor(com.badlogic.gdx.graphics.Color.WHITE);
         player2.setColor(com.badlogic.gdx.graphics.Color.WHITE);
-        player1.setPosition(10, 600);
-        player2.setPosition(10, 250);
+        player1.setPosition(10+283, 600);
+        player2.setPosition(10+283, 250);
         // Main Menu Warning
         mainMenu = new Label("Press M to display the Main Menu", skin);
-        mainMenu.setPosition(235, 350);
+        mainMenu.setPosition(235+283, 350);
         mainMenu.setColor(com.badlogic.gdx.graphics.Color.GOLDENROD);
         mainMenu.setSize(150, 80);
 

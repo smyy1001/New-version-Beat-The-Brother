@@ -34,9 +34,6 @@ public abstract class Orb extends BaseActor{
      */
     abstract void effect(Characters p1, Characters p2);
 
-    /** Used to call how an orb will be presented in the inventory. */
-    void toVisual() {
-    } // ! 
 
     public static Orb getRandomOrb() {
         // Alternatively one can map all subclasses to a map automatically, in case of new orbs
