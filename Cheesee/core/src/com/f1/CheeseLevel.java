@@ -148,7 +148,7 @@ public class CheeseLevel extends BaseScreen {
             // int indexY = (int) (player1.getY() / 19.02);
 
             // First Player
-            if(Gdx.input.isKeyPressed(Keys.LEFT)){
+            if(Gdx.input.isKeyPressed(Keys.A)){
                 if( isBrick(player1.getX(), player1.getY(), 'L',player1) ){
                     player1.velocityX = 0;//previousX;
                 }else{
@@ -157,7 +157,7 @@ public class CheeseLevel extends BaseScreen {
                 }
             }
 
-            if(Gdx.input.isKeyPressed(Keys.RIGHT)){
+            if(Gdx.input.isKeyPressed(Keys.D)){
                 if( isBrick(player1.getX(), player1.getY(), 'R',player1) ){
                     player1.velocityX = 0;//previousX;
                 }else{
@@ -166,7 +166,7 @@ public class CheeseLevel extends BaseScreen {
                 }
             }
 
-            if(Gdx.input.isKeyPressed(Keys.UP)){
+            if(Gdx.input.isKeyPressed(Keys.W)){
                 if( isBrick(player1.getX(), player1.getY(), 'U',player1) ){
                     player1.velocityY = 0;//previousY;            
                 }else{
@@ -175,7 +175,7 @@ public class CheeseLevel extends BaseScreen {
                 }
             }
 
-            if(Gdx.input.isKeyPressed(Keys.DOWN)){
+            if(Gdx.input.isKeyPressed(Keys.S)){
                 if( isBrick(player1.getX(), player1.getY(), 'D',player1) ){
                     player1.velocityY = 0;//previousY;
                 }else{
@@ -185,7 +185,7 @@ public class CheeseLevel extends BaseScreen {
             }
 
             // Second Player
-            if(Gdx.input.isKeyPressed(Keys.A)){
+            if(Gdx.input.isKeyPressed(Keys.LEFT)){
                 if( isBrick(player2.getX(), player2.getY(), 'L',player2) ){
                     player2.velocityX = previousX2;
                     IUH.play();
@@ -195,7 +195,7 @@ public class CheeseLevel extends BaseScreen {
                 }
             }
 
-            if(Gdx.input.isKeyPressed(Keys.D)){
+            if(Gdx.input.isKeyPressed(Keys.RIGHT)){
                 if( isBrick(player2.getX(), player2.getY(), 'R',player2) ){
                     player2.velocityX = 0;//previousX;
                 }else{
@@ -204,7 +204,7 @@ public class CheeseLevel extends BaseScreen {
                 }
             }
 
-            if(Gdx.input.isKeyPressed(Keys.W)){
+            if(Gdx.input.isKeyPressed(Keys.UP)){
                 if( isBrick(player2.getX(), player2.getY(), 'U',player2) ){
                     player2.velocityY = 0;//previousY;            
                 }else{
@@ -213,7 +213,7 @@ public class CheeseLevel extends BaseScreen {
                 }
             }
 
-            if(Gdx.input.isKeyPressed(Keys.S)){
+            if(Gdx.input.isKeyPressed(Keys.DOWN)){
                 if( isBrick(player2.getX(), player2.getY(), 'D',player2) ){
                     player2.velocityY = previousY2;
                     IUH.play();
