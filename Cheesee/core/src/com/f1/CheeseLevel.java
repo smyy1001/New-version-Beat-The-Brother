@@ -59,8 +59,8 @@ public class CheeseLevel extends BaseScreen {
         int mazeHeight = 10;
         int mazeWidth = 5;
         
-        slowDown = 2;
-        speedUp = 2;
+        slowDown = 80;
+        speedUp = 80;
 
         mazeObj = new maze(mazeHeight,mazeWidth);
         mazeObj.generateMaze();
@@ -152,7 +152,7 @@ public class CheeseLevel extends BaseScreen {
                 if( isBrick(player1.getX(), player1.getY(), 'L',player1) ){
                     player1.velocityX = 0;//previousX;
                 }else{
-                    player1.velocityX -= (50);
+                    player1.velocityX -= (player1.getSpeed());
                     previousX = player1.velocityX;
                 }
             }
@@ -161,7 +161,7 @@ public class CheeseLevel extends BaseScreen {
                 if( isBrick(player1.getX(), player1.getY(), 'R',player1) ){
                     player1.velocityX = 0;//previousX;
                 }else{
-                    player1.velocityX += (50);
+                    player1.velocityX += (player1.getSpeed());
                     previousX = player1.velocityX;
                 }
             }
@@ -170,7 +170,7 @@ public class CheeseLevel extends BaseScreen {
                 if( isBrick(player1.getX(), player1.getY(), 'U',player1) ){
                     player1.velocityY = 0;//previousY;            
                 }else{
-                    player1.velocityY += (50);
+                    player1.velocityY += (player1.getSpeed());
                     previousY = player1.velocityY;
                 }
             }
@@ -179,7 +179,7 @@ public class CheeseLevel extends BaseScreen {
                 if( isBrick(player1.getX(), player1.getY(), 'D',player1) ){
                     player1.velocityY = 0;//previousY;
                 }else{
-                    player1.velocityY -= (50);
+                    player1.velocityY -= (player1.getSpeed());
                     previousY = player1.velocityY;
                 }
             }
@@ -190,7 +190,7 @@ public class CheeseLevel extends BaseScreen {
                     player2.velocityX = previousX2;
                     IUH.play();
                 }else{
-                    player2.velocityX -= (50);
+                    player2.velocityX -= (player2.getSpeed());
                     previousX2 = player2.velocityX;
                 }
             }
@@ -199,7 +199,7 @@ public class CheeseLevel extends BaseScreen {
                 if( isBrick(player2.getX(), player2.getY(), 'R',player2) ){
                     player2.velocityX = 0;//previousX;
                 }else{
-                    player2.velocityX += (50);
+                    player2.velocityX += (player2.getSpeed());
                     previousX2 = player2.velocityX;
                 }
             }
@@ -208,7 +208,7 @@ public class CheeseLevel extends BaseScreen {
                 if( isBrick(player2.getX(), player2.getY(), 'U',player2) ){
                     player2.velocityY = 0;//previousY;            
                 }else{
-                    player2.velocityY += (50);
+                    player2.velocityY += (player2.getSpeed());
                     previousY2 = player2.velocityY;
                 }
             }
@@ -218,7 +218,7 @@ public class CheeseLevel extends BaseScreen {
                     player2.velocityY = previousY2;
                     IUH.play();
                 }else{
-                    player2.velocityY -= (50);
+                    player2.velocityY -= (player2.getSpeed());
                     previousY2 = player2.velocityY;
                 }
             }
