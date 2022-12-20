@@ -345,7 +345,8 @@ public class maze {
         while( i < orbCount ) {
             int orbX = rand.nextInt(mazeObj.MAZE_WIDTH);
             int orbY = rand.nextInt(mazeObj.MAZE_HEIGHT);
-            if(mazeObj.maze[orbY][orbX] == 'O') {
+            // Place if the position is empty and not on top of the maze
+            if(mazeObj.maze[orbY][orbX] == 'O' && orbY > 1) {
                 Orb newOrb = Orb.getRandomOrb();
                 // Will get a char 1, 2, 3, 4, 5 depending on the orb type
                 mazeObj.maze[orbY][orbX] = newOrb.getChar();
