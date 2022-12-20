@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -46,6 +47,8 @@ public class CheeseLevel extends BaseScreen {
     final int mapWidth = 1366;
     final int mapHeight = 758;
 
+    Sound IUH;
+
     public CheeseLevel(CheeseGame g) {
         super(g);
         this.game = g;
@@ -55,7 +58,8 @@ public class CheeseLevel extends BaseScreen {
 
         mazeObj = new maze(mazeHeight,mazeWidth);
         mazeObj.generateMaze();
-        renderTextures(mazeObj);        
+        renderTextures(mazeObj);  
+        IUH = Gdx.audio.newSound(Gdx.files.internal("assets/Minecraft Death Sound Effect.mp3"));      
     }
 
     @Override
@@ -178,6 +182,7 @@ public class CheeseLevel extends BaseScreen {
             if(Gdx.input.isKeyPressed(Keys.A)){
                 if( isBrick(player2.getX(), player2.getY(), 'L',player2) ){
                     player2.velocityX = previousX2;
+                    IUH.play();
                 }else{
                     player2.velocityX -= (50);
                     previousX2 = player2.velocityX;
@@ -205,6 +210,7 @@ public class CheeseLevel extends BaseScreen {
             if(Gdx.input.isKeyPressed(Keys.S)){
                 if( isBrick(player2.getX(), player2.getY(), 'D',player2) ){
                     player2.velocityY = previousY2;
+                    IUH.play();
                 }else{
                     player2.velocityY -= (50);
                     previousY2 = player2.velocityY;
