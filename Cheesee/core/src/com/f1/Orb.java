@@ -10,6 +10,8 @@ public abstract class Orb extends BaseActor{
     // Attributes
     int gridX;
     int gridY;
+    final int SPEED_UP = 30;
+    final int SPEED_DOWN = 30;
     char mazeArrayChar;
 
     // Methods
@@ -30,7 +32,7 @@ public abstract class Orb extends BaseActor{
      * picked up
      * and it will trigger the effects of the orb on the player.
      */
-    abstract void effect();
+    abstract void effect(Characters p1, Characters p2);
 
     /** Used to call how an orb will be presented in the inventory. */
     void toVisual() {
@@ -77,7 +79,7 @@ class BindOrb extends Orb {
     }
 
     @Override
-    void effect() {
+    void effect(Characters p1, Characters p2) {
         // TODO Create the bindOrb effects.
     }
 
@@ -98,7 +100,7 @@ class FreezeOrb extends Orb {
     }
 
     @Override
-    void effect() {
+    void effect(Characters p1, Characters p2) {
 
     }
 
@@ -119,7 +121,7 @@ class BrickOrb extends Orb {
     }
 
     @Override
-    void effect() {
+    void effect(Characters p1, Characters p2) {
 
     }
 
@@ -140,8 +142,13 @@ class SlowOrb extends Orb {
     }
 
     @Override
-    void effect() {
-
+    void effect(Characters p1, Characters p2) {
+        if(p2.getSpeed() < 15){
+            p2.updateSpeed(p2.getSpeed() - 1);
+        }
+        else{
+            p2.updateSpeed(p2.getSpeed() - SPEED_DOWN);
+        }
     }
 
 }
@@ -161,8 +168,14 @@ class SpeedOrb extends Orb {
     }
     
     @Override
-    void effect() {
-
+    void effect(Characters p1, Characters p2) {
+        if(p1.getSpeed() < 250){
+            p1.updateSpeed(p1.getSpeed() + SPEED_UP);
+        }
+        else{
+            p1.updateSpeed(p1.getSpeed() + 5);
+        }
     }
 
 }
+
