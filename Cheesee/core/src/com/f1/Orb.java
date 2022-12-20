@@ -17,8 +17,8 @@ public abstract class Orb extends BaseActor{
     // Attributes
     int gridX;
     int gridY;
-    final int SPEED_UP = 100;
-    final int SPEED_DOWN = 100;
+    final int SPEED_UP = 50;
+    final int SPEED_DOWN = 50;
     char mazeArrayChar;
 
     // Methods
@@ -52,7 +52,7 @@ public abstract class Orb extends BaseActor{
         Random rand = new Random();
         int choice = rand.nextInt(5);
         switch (choice) {
-            case 0: return new BindOrb();
+            case 0: return new BlindOrb();
             case 1: return new FreezeOrb();
             case 2: return new BrickOrb();
             case 3: return new SlowOrb();
@@ -69,14 +69,14 @@ public abstract class Orb extends BaseActor{
 }
 
 
-class BindOrb extends Orb {
-    
-    public BindOrb() {
+class BlindOrb extends Orb {
+    BaseActor blindBackground;
+    public BlindOrb() {
         super();
         super.mazeArrayChar = '1';
     }
 
-    public BindOrb(int gridX, int gridY) {
+    public BlindOrb(int gridX, int gridY) {
         super();
         super.mazeArrayChar = '1';
         setGridX(gridX);
@@ -85,12 +85,32 @@ class BindOrb extends Orb {
 
     @Override
     void effect(Characters p1, Characters p2, Stage mainStage) {
-        // TODO Create the bindOrb effects.
+        blindBackground = new BaseActor();
+        blindBackground.setTexture(new Texture(Gdx.files.internal("assets/blackBackground.jpeg")));
+        if(p1.getX() < 1366 / 2){
+            blindBackground.setPosition(1366 / 2 - 20, 0);
+            blindBackground.setSize(1366 / 2 - 90, 700);
+            mainStage.addActor(blindBackground);
+        }
+        else{
+            blindBackground.setPosition(0, 0);
+            blindBackground.setSize(1366 / 2 - 40, 700);
+            mainStage.addActor(blindBackground);
+        }
+        scheduleRemoveEffect(p1, p2);
     }
 
     @Override
     void scheduleRemoveEffect(Characters p1, Characters p2) {
-        // TODO Auto-generated method stub
+        Timer timer;
+        timer = new Timer();
+        TimerTask speedTask = new TimerTask() {
+            @Override
+            public void run() {  
+                blindBackground.remove(); 
+            }
+        };
+        timer.schedule( speedTask, 5000); 
         
     }
 
@@ -127,9 +147,9 @@ class FreezeOrb extends Orb {
         timer = new Timer();
         TimerTask speedTask = new TimerTask() {
             @Override
-            public void run() {   
+            public void run() {  
+                ice.remove(); 
                 P2.updateSpeed(150);
-                ice.remove();
             }
         };
         timer.schedule( speedTask, 3000);  
@@ -194,12 +214,12 @@ class SlowOrb extends Orb {
     @Override
     void scheduleRemoveEffect(Characters p1, Characters p2) {
         Timer timer;
-        final Characters P1 = p1;
+        final Characters P1 = p2;
         timer = new Timer();
         TimerTask speedTask = new TimerTask() {
             @Override
             public void run() {   
-                P1.updateSpeed(-SPEED_DOWN);      
+                P1.updateSpeed(SPEED_DOWN);      
             }
         };
         timer.schedule( speedTask, 3000);
