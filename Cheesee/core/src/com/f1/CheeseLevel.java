@@ -86,7 +86,7 @@ public class CheeseLevel extends BaseScreen {
         timeElapsed = 0;
 
         cheese = new BaseActor();
-        cheese.setTexture(new Texture(Gdx.files.internal("assets/cheese.png")));
+        cheese.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/cheese.png")));
         float randX = MathUtils.random(0, viewWidth);
         float randY = MathUtils.random(0, viewHeight);
         cheese.setPosition(randX, randY);
@@ -96,10 +96,10 @@ public class CheeseLevel extends BaseScreen {
 
         // The Players
         if (!player1.textureChanged) {
-            player1.setTexture(new Texture(Gdx.files.internal("assets/redBall.png")));
+            player1.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/redBall.png")));
         }
         if (!player2.textureChanged) {
-            player2.setTexture(new Texture(Gdx.files.internal("assets/blueBall.png")));
+            player2.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/blueBall.png")));
         }
         player1.setPosition(20, 20);
         player2.setPosition(725, 20);
@@ -110,7 +110,7 @@ public class CheeseLevel extends BaseScreen {
 
         // "Win" Text
         winText = new BaseActor();
-        winText.setTexture(new Texture(Gdx.files.internal("assets/you-win.png")));
+        winText.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/you-win.png")));
         winText.setPosition(170, 60);
         winText.setVisible(false);
         uiStage.addActor(winText);
@@ -140,10 +140,12 @@ public class CheeseLevel extends BaseScreen {
             player2.velocityX = 0;
             player2.velocityY = 0;
 
-            float previousX = player1.getX();
-            float previousY = player1.getY();
-            float previousX2 = player2.getX();
-            float previousY2 = player2.getY();
+            float previousX= player1.getX();
+            float previousY= player1.getY();
+            float previousX2= player2.getX();
+            float previousY2= player2.getY();
+            // int indexX = (int) (player1.getX() / 19.02);
+            // int indexY = (int) (player1.getY() / 19.02);
 
             // First Player
             if(Gdx.input.isKeyPressed(Keys.A)){
@@ -224,9 +226,9 @@ public class CheeseLevel extends BaseScreen {
             // Escape button
             if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                 pausedScreen = true;
-                Skin skin = new Skin(Gdx.files.internal("assets/Glassy_UI_Skin/glassyui/glassy-ui.json"));
+                Skin skin = new Skin(Gdx.files.internal("Cheesee/assets/Glassy_UI_Skin/glassyui/glassy-ui.json"));
                 blackBackground = new BaseActor();
-                blackBackground.setTexture(new Texture(Gdx.files.internal("assets/blackBackground.jpeg")));
+                blackBackground.setTexture(new Texture(Gdx.files.internal("Cheesee/assets/blackBackground.jpeg")));
                 blackBackground.setPosition(0, 0);
                 blackBackground.setSize(Gdx.graphics.getWidth() * 4, Gdx.graphics.getHeight() * 4);
                 mainStage.addActor(blackBackground);
@@ -321,13 +323,22 @@ public class CheeseLevel extends BaseScreen {
 
             if (player1.getBoundingRectangle().contains(orb.getBoundingRectangle())) {
                 // Pick up and add the orb to inventory, if possible
-                ((Orb)orb).effect(player1, player2);
-                disappearOrb(orb);
+                System.out.println("Touching orb " + orb);
+                if(player1.getInventory().isEmpty()) {
+                    player1.getInventory().add( (Orb) orb);
+                    // Make the orb disappear with animation
+                    disappearOrb( (Orb) orb);
+                }
             }
+
             if (player2.getBoundingRectangle().contains(orb.getBoundingRectangle())) {
                 // Pick up and add the orb to inventory, if possible
-                ((Orb)orb).effect(player2, player1);
-                disappearOrb(orb);
+                System.out.println("Touching orb " + orb);
+                if(player2.getInventory().isEmpty()) {
+                    player2.getInventory().add( (Orb) orb);
+                    // Make the orb disappear with animation
+                    disappearOrb( (Orb) orb);
+                }
             }
         }
         
@@ -392,31 +403,39 @@ public class CheeseLevel extends BaseScreen {
 
         if('U' == direction){                                                                                  
             if(mazeObj.mirroredMaze[(int)(mapYInd+playerSize)][(int)(mapXInd+ playerSize/2)] !=  'X' ){
+                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
                 return false;
             }else{
+                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
                 return true;
             }
 
         }else if('D'== direction){
 
             if(mazeObj.mirroredMaze[(int)mapYInd][(int)(mapXInd+ playerSize/2)] !=  'X' ){
+                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
                 return false;
             }else{
+                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
                 return true;
             }
 
         }else if('R'== direction){
 
             if(mazeObj.mirroredMaze[(int)(mapYInd+ playerSize/2)][(int)(mapXInd+ playerSize)] !=  'X'){
+                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
                 return false;
             }else{
+                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
                 return true;
             }
 
         }else{
             if(mazeObj.mirroredMaze[(int)(mapYInd+ playerSize/2)][(int)mapXInd] !=  'X' ){
+                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
                 return false;
             }else{
+                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
                 return true;
             }
         }
@@ -428,37 +447,37 @@ public class CheeseLevel extends BaseScreen {
             for (int j = 0; j < mazeObj.mirroredMaze[0].length; j++) {
                 switch (mazeObj.mirroredMaze[i][j]) {
                     case 'X':
-                        brick = generateAndRenderBaseActor(j, i, "assets/Brick_gray.jpeg");
+                        brick = generateAndRenderBaseActor(j, i, "Cheesee/assets/Brick_gray.jpeg");
                     // bricks.add(brick);
                         break;
 
                     case '1':
                         orb = new BindOrb(i, j);
-                        renderBaseActor(orb, j, i, "assets/Orb_Blind.png");
+                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Blind.png");
                         orbs.add(orb);
                         break;
                 
                     case '2':
                         orb = new FreezeOrb(i, j);
-                        renderBaseActor(orb, j, i, "assets/Orb_Freeze.png");
+                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Freeze.png");
                         orbs.add(orb);
                         break;
                     
                     case '3':
                         orb = new BrickOrb(i, j);
-                        renderBaseActor(orb, j, i, "assets/Orb_Brick.png");
+                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Brick.png");
                         orbs.add(orb);
                         break;
                 
                     case '4':
                         orb = new SlowOrb(i, j);
-                        renderBaseActor(orb, j, i, "assets/Orb_Slow.png");
+                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Slow.png");
                         orbs.add(orb);
                         break; 
                     
                     case '5':
                         orb = new SpeedOrb(i, j);
-                        renderBaseActor(orb, j, i, "assets/Orb_Speed.png");
+                        renderBaseActor(orb, j, i, "Cheesee/assets/Orb_Speed.png");
                         orbs.add(orb);
                         break;
 
