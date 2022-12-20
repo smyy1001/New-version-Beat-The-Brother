@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -21,12 +22,19 @@ public class CheeseMenu implements Screen{
     Rectangle characterRect;
     Sprite backgroundSprite;
     CheeseGame game;
+    Label label1;
+    Label label2;
+    BaseActor background;
+    BaseActor scoreLabel;
+    float timer;
 
     //Input coordinations
     Vector2 tmp = new Vector2();
 
     public CheeseMenu(CheeseGame game){
         this.game = game;
+
+        timer =0;
 
         // Background
         CheeseLevel.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/backgroundSong.mp3"));
@@ -54,6 +62,16 @@ public class CheeseMenu implements Screen{
         //Alpha is setting the transparency
         backgroundSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         backgroundSprite.setAlpha(0.9f);
+
+        // the Loading Screen
+        background = new BaseActor();
+        background.setTexture(new Texture(Gdx.files.internal("assets/blackBackground.jpeg")));
+        background.setSize(1500, 1000);
+        background.setPosition(0, 0);
+        scoreLabel = new BaseActor();
+        scoreLabel.setTexture(new Texture(Gdx.files.internal("assets/SCORE.png")));
+        scoreLabel.setSize(250, 80);
+        scoreLabel.setPosition(500, 400);
     }
 
     // Overridden methods
@@ -78,14 +96,12 @@ public class CheeseMenu implements Screen{
     public void render(float delta) {
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         batch.begin();
         backgroundSprite.draw(batch);
         startButtonSprite.draw(batch);
         charactersButtonSprite.draw(batch);
         exitButtonSprite.draw(batch);
         batch.end();
-
         handleTouch();
     }
 
@@ -95,7 +111,6 @@ public class CheeseMenu implements Screen{
             tmp.set(Gdx.input.getX(), Gdx.input.getY());
             float touchX = tmp.x;
             float touchY = Gdx.graphics.getHeight() - 1 - tmp.y;
-
             startRect = startButtonSprite.getBoundingRectangle();
             characterRect = charactersButtonSprite.getBoundingRectangle();
             exitRect = exitButtonSprite.getBoundingRectangle();
@@ -104,7 +119,7 @@ public class CheeseMenu implements Screen{
                 Gdx.app.exit();
             }
             else if(startRect.contains(touchX, touchY)) {
-                game.setScreen(new CheeseLevel(game));
+                game.setScreen(new LoadingScreen(game));
             }
             else if(characterRect.contains(touchX, touchY)){
                 game.setScreen(new CharacterScreen(game));

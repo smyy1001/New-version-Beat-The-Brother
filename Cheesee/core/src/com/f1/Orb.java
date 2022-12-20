@@ -1,5 +1,8 @@
 package com.f1;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public abstract class Orb extends BaseActor{
     /**
@@ -10,8 +13,8 @@ public abstract class Orb extends BaseActor{
     // Attributes
     int gridX;
     int gridY;
-    final int SPEED_UP = 30;
-    final int SPEED_DOWN = 30;
+    final int SPEED_UP = 100;
+    final int SPEED_DOWN = 100;
     char mazeArrayChar;
 
     // Methods
@@ -33,6 +36,7 @@ public abstract class Orb extends BaseActor{
      * and it will trigger the effects of the orb on the player.
      */
     abstract void effect(Characters p1, Characters p2);
+    abstract void scheduleRemoveEffect(Characters p1, Characters p2);
 
 
     public static Orb getRandomOrb() {
@@ -62,10 +66,12 @@ public abstract class Orb extends BaseActor{
 
 
 class BindOrb extends Orb {
+
     
     public BindOrb() {
         super();
         super.mazeArrayChar = '1';
+
     }
 
     public BindOrb(int gridX, int gridY) {
@@ -80,9 +86,16 @@ class BindOrb extends Orb {
         // TODO Create the bindOrb effects.
     }
 
+    @Override
+    void scheduleRemoveEffect(Characters p1, Characters p2) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
 
 class FreezeOrb extends Orb {
+
     
     public FreezeOrb() {
         super();
@@ -101,13 +114,21 @@ class FreezeOrb extends Orb {
 
     }
 
+    @Override
+    void scheduleRemoveEffect(Characters p1, Characters p2) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
 
 class BrickOrb extends Orb {
+
     
     public BrickOrb() {
         super();
         super.mazeArrayChar = '3';
+
     }
 
     public BrickOrb(int gridX, int gridY) {
@@ -122,13 +143,21 @@ class BrickOrb extends Orb {
 
     }
 
+    @Override
+    void scheduleRemoveEffect(Characters p1, Characters p2) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
 
 class SlowOrb extends Orb {
+
     
     public SlowOrb() {
         super();
         super.mazeArrayChar = '4';
+
     }
 
     public SlowOrb(int gridX, int gridY) {
@@ -136,21 +165,39 @@ class SlowOrb extends Orb {
         super.mazeArrayChar = '4';
         setGridX(gridX);
         setGridY(gridY);
+
     }
 
     @Override
     void effect(Characters p1, Characters p2) {
-        if(p2.getSpeed() < 15){
+        
+        if(p2.getSpeed() < SPEED_DOWN){
             p2.updateSpeed(p2.getSpeed() - 1);
         }
         else{
-            p2.updateSpeed(p2.getSpeed() - SPEED_DOWN);
+            p2.updateSpeed(-SPEED_DOWN);
         }
+        scheduleRemoveEffect(p1, p2);
     }
 
+    @Override
+    void scheduleRemoveEffect(Characters p1, Characters p2) {
+        
+        final Characters P1 = p1;
+        Timer timer = new Timer();
+        TimerTask speedTask = new TimerTask() {
+            @Override
+            public void run() {   
+                P1.updateSpeed(-SPEED_DOWN);      
+            }
+        };
+        timer.schedule( speedTask, 3000);
+        
+    }
 }
 
 class SpeedOrb extends Orb {
+
     
     public SpeedOrb() {
         super();
@@ -167,11 +214,27 @@ class SpeedOrb extends Orb {
     @Override
     void effect(Characters p1, Characters p2) {
         if(p1.getSpeed() < 250){
-            p1.updateSpeed(p1.getSpeed() + SPEED_UP);
+            p1.updateSpeed(SPEED_UP);
         }
         else{
-            p1.updateSpeed(p1.getSpeed() + 5);
+            p1.updateSpeed(5);
         }
+        scheduleRemoveEffect(p1, p2);
+    }
+
+    @Override
+    void scheduleRemoveEffect(Characters p1, Characters p2) {
+        
+        final Characters P1 = p1;
+        Timer timer = new Timer();
+        TimerTask speedTask = new TimerTask() {
+            @Override
+            public void run() {   
+                P1.updateSpeed(-SPEED_UP);      
+            }
+        };
+        timer.schedule( speedTask, 3000);
+        
     }
 
 }

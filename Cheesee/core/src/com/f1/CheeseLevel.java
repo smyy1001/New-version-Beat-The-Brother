@@ -1,6 +1,9 @@
 package com.f1;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
@@ -23,7 +26,7 @@ public class CheeseLevel extends BaseScreen {
 
     CheeseGame game;
     ArrayList<BaseActor> bricks;
-    ArrayList<BaseActor> orbs = new ArrayList<BaseActor>();
+    List<BaseActor> orbs = new ArrayList<BaseActor>();
     static Characters player1 = new Characters("Player1");
     static Characters player2 = new Characters("Player2");
     private Button pauseExitButton;
@@ -47,6 +50,10 @@ public class CheeseLevel extends BaseScreen {
     private Label timeLabel;
     final int mapWidth = 1366;
     final int mapHeight = 758;
+    static int currenti=0;
+    static int currentj=0;
+    static int borderi =0;
+    static int borderj =0;
 
     private float slowDown; // how much the character is going to slow down with slow down orb
     private float speedUp; // how much the character is going to speed up with speed up orb
@@ -65,6 +72,8 @@ public class CheeseLevel extends BaseScreen {
 
         mazeObj = new maze(mazeHeight,mazeWidth);
         mazeObj.generateMaze();
+        borderi = mazeObj.maze.length;
+        borderj = mazeObj.maze[0].length;
         renderTextures(mazeObj);  
         IUH = Gdx.audio.newSound(Gdx.files.internal("assets/Minecraft Death Sound Effect.mp3"));      
     }
@@ -103,7 +112,7 @@ public class CheeseLevel extends BaseScreen {
             player2.setTexture(new Texture(Gdx.files.internal("assets/blueBall.png")));
         }
         player1.setPosition(20, 20);
-        player2.setPosition(725, 20);
+        player2.setPosition(1205, 20);
         player1.setSize(35, 35);
         player2.setSize(35, 35);
         mainStage.addActor(player1);
@@ -136,6 +145,8 @@ public class CheeseLevel extends BaseScreen {
 
     @Override
     public void update(float dt) {
+
+        
 
         // The whole movement part
         Rectangle player1Rectangle = player1.getBoundingRectangle();
@@ -267,45 +278,12 @@ public class CheeseLevel extends BaseScreen {
                 mainStage.addActor(sound);
             }
 
-            player1.setX(25f);
-            player1.setY(25f);
+            // player1.setX(25f);
+            // player1.setY(25f);
 
-            player2.setX(MathUtils.clamp(player2.getX(), 0, mapWidth - player2.getWidth()));
-            player2.setY(25f);
+            // player2.setX(MathUtils.clamp(player2.getX(), 0, mapWidth - player2.getWidth()));
+            // player2.setY(25f);
 
-            Rectangle cheeseRectangle = cheese.getBoundingRectangle();
-
-            // If 2 rectangle are in the same location
-            if (!win && (cheeseRectangle.contains(player1Rectangle) || cheeseRectangle.contains(player2REctangle))) {
-                // mousey1Speed += 100;
-                // mousey2Speed += 50;
-                win = true;
-                // Disappearing of the cheese
-                Action spinShrinkFadeOut = Actions.parallel(
-                        // Transparency volume
-                        Actions.alpha(1),
-                        // 360 degree
-                        Actions.rotateBy(360, 1),
-                        // 0 for 2 seconds
-                        Actions.scaleTo(0, 0, 2),
-                        Actions.fadeOut(1));
-                // Add this action
-                cheese.addAction(spinShrinkFadeOut);
-                Action fadeInColorCycleForever = Actions.sequence(
-                        Actions.alpha(0),
-                        // Visible
-                        Actions.show(),
-                        // Duration of fadeIn
-                        Actions.fadeIn(2),
-                        Actions.forever(
-                                Actions.sequence(
-                                        // Transitions from the color at the time this action starts to the specified
-                                        // color.
-                                        Actions.color(new Color(1, 0, 0, 1), 1),
-                                        Actions.color(new Color(0, 0, 1, 1), 1))));
-                winText.addAction(fadeInColorCycleForever);
-                // winText.setVisible(true);
-            }
 
             handleOrbs();
 
@@ -325,28 +303,31 @@ public class CheeseLevel extends BaseScreen {
     /** Checks if orbs are touched and handles their behaviour accordingly. Called on every update(). */
     public void handleOrbs() {
 
-        // TODO Add seperate behaviour to drop an orb to the ground!!!!!
-        for(BaseActor orb: orbs) 
-        {
+
+        for (Iterator<BaseActor> iterator = orbs.iterator(); iterator.hasNext(); ) {
+            BaseActor orb = iterator.next();
 
             if (player1.getBoundingRectangle().contains(orb.getBoundingRectangle())) {
                 // Pick up and add the orb to inventory, if possible
                 System.out.println("Touching orb " + orb);
-                if(player1.getInventory().isEmpty()) {
-                    player1.getInventory().add( (Orb) orb);
-                    // Make the orb disappear with animation
-                    disappearOrb( (Orb) orb);
-                }
+                ((Orb) orb).effect(player1, player2);
+                player1.orbPicked = true;
+                // Make the orb disappear with animation
+                disappearOrb( (Orb) orb);
+                // Remove the orb from the list of orbs to be checked for collision.
+                iterator.remove();
+                
             }
 
             if (player2.getBoundingRectangle().contains(orb.getBoundingRectangle())) {
                 // Pick up and add the orb to inventory, if possible
                 System.out.println("Touching orb " + orb);
-                if(player2.getInventory().isEmpty()) {
-                    player2.getInventory().add( (Orb) orb);
-                    // Make the orb disappear with animation
-                    disappearOrb( (Orb) orb);
-                }
+                ((Orb) orb).effect(player2, player1);
+                player2.orbPicked = true;
+                // Make the orb disappear with animation
+                disappearOrb( (Orb) orb);
+                // Remove the orb from the list of orbs to be checked for collision
+                iterator.remove();
             }
         }
         
@@ -411,39 +392,31 @@ public class CheeseLevel extends BaseScreen {
 
         if('U' == direction){                                                                                  
             if(mazeObj.mirroredMaze[(int)(mapYInd+playerSize)][(int)(mapXInd+ playerSize/2)] !=  'X' ){
-                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
                 return false;
             }else{
-                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
                 return true;
             }
 
         }else if('D'== direction){
 
             if(mazeObj.mirroredMaze[(int)mapYInd][(int)(mapXInd+ playerSize/2)] !=  'X' ){
-                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
                 return false;
             }else{
-                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
                 return true;
             }
 
         }else if('R'== direction){
 
             if(mazeObj.mirroredMaze[(int)(mapYInd+ playerSize/2)][(int)(mapXInd+ playerSize)] !=  'X'){
-                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
                 return false;
             }else{
-                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
                 return true;
             }
 
         }else{
             if(mazeObj.mirroredMaze[(int)(mapYInd+ playerSize/2)][(int)mapXInd] !=  'X' ){
-                System.out.println((int)mapYInd +" false  "+ (int)mapXInd);
                 return false;
             }else{
-                System.out.println((int)mapYInd +" true  "+ (int)mapXInd);
                 return true;
             }
         }
@@ -456,7 +429,9 @@ public class CheeseLevel extends BaseScreen {
                 switch (mazeObj.mirroredMaze[i][j]) {
                     case 'X':
                         brick = generateAndRenderBaseActor(j, i, "assets/Brick_gray.jpeg");
-                    // bricks.add(brick);
+                        bricks.add(brick);
+                        currenti = i;
+                        currentj = j;
                         break;
 
                     case '1':

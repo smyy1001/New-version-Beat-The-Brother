@@ -191,7 +191,7 @@ public class CharacterScreen extends BaseScreen {
                 }
             }
             if (firstPlayer == 1 && secondPlayer == 1) {
-                game.setScreen(new CheeseLevel(game));
+                game.setScreen(new LoadingScreen(game));
             }
         }
 

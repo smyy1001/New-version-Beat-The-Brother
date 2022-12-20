@@ -1,6 +1,9 @@
 package com.f1;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Timer;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -9,28 +12,18 @@ public class Characters extends BaseActor {
     // Attributes
     private String userName;
     private float speed;
-    private ArrayList<Orb> orbInventory;
     boolean textureChanged = false;
     boolean nameChanged = false;
+    int score = 0;
+    boolean orbPicked = false;
+    ArrayList<Orb> activeOrbs = new ArrayList<Orb>();
+    float timeSinceOrb;
+
+    Timer timer = new Timer();
 
     // The Constructor
     Characters(String userName) {
         setSpeed();
-        setInventory();
-    }
-
-    // Initialize the Inventory
-    private void setInventory() {
-        orbInventory = new ArrayList<Orb>();
-    }
-
-    // Adding and removing Orbs
-    public void addOrbToInventory(Orb o) {
-        orbInventory.add(o);
-    }
-
-    public void removeOrbToInventory(Orb o) {
-        orbInventory.remove(o);
     }
 
     // Setter of the Speed
@@ -41,6 +34,11 @@ public class Characters extends BaseActor {
     // Updating the Speed
     public void updateSpeed(float speed) {
         this.speed += speed;
+    }
+
+    // Update Score
+    public void updateScore() {
+        score++;
     }
 
     // updating the Texture
@@ -64,8 +62,8 @@ public class Characters extends BaseActor {
         return userName;
     }
 
-    public ArrayList<Orb> getInventory() {
-        return orbInventory;
+    public int getScore() {
+        return score;
     }
 
 }
