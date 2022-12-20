@@ -315,7 +315,7 @@ public class CheeseLevel extends BaseScreen {
         for(BaseActor orb: orbs) 
         {
 
-            if (orb.getBoundingRectangle().contains(player1.getBoundingRectangle())) {
+            if (player1.getBoundingRectangle().contains(orb.getBoundingRectangle())) {
                 // Pick up and add the orb to inventory, if possible
                 System.out.println("Touching orb " + orb);
                 if(player1.getInventory().isEmpty()) {
@@ -325,7 +325,7 @@ public class CheeseLevel extends BaseScreen {
                 }
             }
 
-            if (orb.getBoundingRectangle().contains(player2.getBoundingRectangle())) {
+            if (player2.getBoundingRectangle().contains(orb.getBoundingRectangle())) {
                 // Pick up and add the orb to inventory, if possible
                 System.out.println("Touching orb " + orb);
                 if(player2.getInventory().isEmpty()) {
