@@ -35,7 +35,7 @@ public class Characters extends BaseActor {
 
     // Setter of the Speed
     private void setSpeed() { // * the speed methods will be important when we implement the speed orb
-        this.speed = 5; // ! the number is just an example
+        this.speed = 150; // ! the number is just an example
     }
 
     // Updating the Speed
