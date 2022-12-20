@@ -310,7 +310,7 @@ public class CheeseLevel extends BaseScreen {
             if (player1.getBoundingRectangle().contains(orb.getBoundingRectangle())) {
                 // Pick up and add the orb to inventory, if possible
                 System.out.println("Touching orb " + orb);
-                ((Orb) orb).effect(player1, player2);
+                ((Orb) orb).effect(player1, player2, mainStage);
                 player1.orbPicked = true;
                 // Make the orb disappear with animation
                 disappearOrb( (Orb) orb);
@@ -322,7 +322,7 @@ public class CheeseLevel extends BaseScreen {
             if (player2.getBoundingRectangle().contains(orb.getBoundingRectangle())) {
                 // Pick up and add the orb to inventory, if possible
                 System.out.println("Touching orb " + orb);
-                ((Orb) orb).effect(player2, player1);
+                ((Orb) orb).effect(player2, player1, mainStage);
                 player2.orbPicked = true;
                 // Make the orb disappear with animation
                 disappearOrb( (Orb) orb);
