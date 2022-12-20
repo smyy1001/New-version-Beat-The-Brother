@@ -47,6 +47,9 @@ public class CheeseLevel extends BaseScreen {
     final int mapWidth = 1366;
     final int mapHeight = 758;
 
+    private float slowDown; // how much the character is going to slow down with slow down orb
+    private float speedUp; // how much the character is going to speed up with speed up orb
+    
     Sound IUH;
 
     public CheeseLevel(CheeseGame g) {
@@ -55,6 +58,9 @@ public class CheeseLevel extends BaseScreen {
         bricks = new ArrayList<BaseActor>();
         int mazeHeight = 10;
         int mazeWidth = 5;
+        
+        slowDown = 2;
+        speedUp = 2;
 
         mazeObj = new maze(mazeHeight,mazeWidth);
         mazeObj.generateMaze();
@@ -352,6 +358,16 @@ public class CheeseLevel extends BaseScreen {
         // Add this action
         orb.addAction(spinShrinkFadeOut);
     }
+    
+    // a function that slows downs the enemy which is given as a parameter for the function
+    public void slowDown(Characters Enemy) {
+        Enemy.updateSpeed(Enemy.getSpeed() - slowDown);
+    }
+    // a function that sp3eds up the character given
+    public void speedUp(Characters theCharacterToBeSpeedUpped) {
+        theCharacterToBeSpeedUpped.updateSpeed(theCharacterToBeSpeedUpped.getSpeed() + speedUp);
+    }
+    
 
     public void handlePause() {
         if (Gdx.input.isKeyPressed(Keys.M)) {
