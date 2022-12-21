@@ -111,6 +111,7 @@ public class LoadingScreen extends BaseScreen{
             }
         }
         if (Gdx.input.isKeyPressed(Keys.M)) {
+            MazeLevel.backgroundMusic.pause();
             game.setScreen(new MainMenu(game));
             Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
         }
