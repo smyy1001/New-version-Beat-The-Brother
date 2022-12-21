@@ -53,7 +53,7 @@ public class LoadingScreen extends BaseScreen{
         dash = new BaseActor();
         dash.setTexture(new Texture(Gdx.files.internal("assets/dash.jpg")));
         dash.setSize(100,50);
-        dash.setPosition(610, 365);
+        dash.setPosition(610, 410);
 
         scoreLabel = new BaseActor();
         scoreLabel.setTexture(new Texture(Gdx.files.internal("assets/SCORE.png")));
@@ -77,7 +77,7 @@ public class LoadingScreen extends BaseScreen{
             score1.setTexture(new Texture(Gdx.files.internal("assets/number2.png")));
         }
         score1.setSize(200,200);
-        score1.setPosition(400, 300);
+        score1.setPosition(400, 335);
 
 
         score2 = new BaseActor();
@@ -91,7 +91,7 @@ public class LoadingScreen extends BaseScreen{
             score2.setTexture(new Texture(Gdx.files.internal("assets/number2.png")));
         }
         score2.setSize(200,200);
-        score2.setPosition(720, 300);
+        score2.setPosition(720, 335);
 
         mainStage.addActor(score1);
         mainStage.addActor(score2);
@@ -107,8 +107,6 @@ public class LoadingScreen extends BaseScreen{
             float touchX = tmp.x;
             float touchY = Gdx.graphics.getHeight() - 1 - tmp.y;
             if(rect.contains(touchX,touchY)) {
-                MazeLevel.player1.setPosition(20, 20);
-                MazeLevel.player2.setPosition(1205, 20);
                 game.setScreen(new MazeLevel(game));
             }
         }

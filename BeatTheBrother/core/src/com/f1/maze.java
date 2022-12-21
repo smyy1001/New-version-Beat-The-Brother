@@ -336,7 +336,7 @@ public class maze {
         // TODO Making it sensitive to start and end positions
 
         // orbFrequencyFactor determines how frequent will the orbs be placed ( = 50 -> Roughly an orb for every 50 spaces in maze.)
-        float orbFrequencyFactor = 100;
+        float orbFrequencyFactor = 150;
         // Determining how many orbs to place for the maze size. Area / OrbPerArea
         int orbCount = (int)( (mazeObj.MAZE_HEIGHT * mazeObj.MAZE_WIDTH) / orbFrequencyFactor ); 
 

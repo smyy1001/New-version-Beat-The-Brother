@@ -36,6 +36,9 @@ public class MainMenu implements Screen{
 
         timer =0;
 
+        MazeLevel.player1Score = 0;
+        MazeLevel.player2Score = 0;
+
         // Background
         MazeLevel.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/backgroundSong.mp3"));
         MazeLevel.backgroundMusic.setLooping(true);

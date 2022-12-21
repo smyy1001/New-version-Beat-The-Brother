@@ -34,8 +34,6 @@ public class MazeLevel extends BaseScreen {
     private Button pauseContinueButton;
     private BaseActor blackBackground;
     private BaseActor winner;
-    private BaseActor wonImage1;
-    private BaseActor wonImage2;
     private BaseActor player1Pic;
     private BaseActor player2Pic;
     private Label pauseMainMenu;
@@ -51,6 +49,7 @@ public class MazeLevel extends BaseScreen {
     final int mapWidth = 1366;
     final int mapHeight = 758;
     int time;
+    private boolean setPos;
     static int player1Score = 0;
     static int player2Score = 0;
     static int currenti=0;
@@ -78,6 +77,8 @@ public class MazeLevel extends BaseScreen {
         slowDown = 80;
         speedUp = 80;
 
+        setPos = false;
+
         mazeObj = new maze(mazeHeight,mazeWidth);
         mazeObj.generateMaze();
         for(int x = mazeObj.maze.length-8; x <= mazeObj.maze.length-1; x++ ){
@@ -90,10 +91,7 @@ public class MazeLevel extends BaseScreen {
         borderi = mazeObj.maze.length;
         borderj = mazeObj.maze[0].length;
         renderTextures(mazeObj);  
-        IUH = Gdx.audio.newSound(Gdx.files.internal("assets/Minecraft Death Sound Effect.mp3"));
-        
-        player1.remove();
-        player2.remove();
+        // IUH = Gdx.audio.newSound(Gdx.files.internal("assets/Minecraft Death Sound Effect.mp3"));
 
         player1.setPosition(20, 20);
         player2.setPosition(1205, 20);
@@ -135,17 +133,6 @@ public class MazeLevel extends BaseScreen {
         finish.setPosition(Gdx.graphics.getWidth()/2 - 50 - finish.getWidth()/2, 700);
         mainStage.addActor(finish);
 
-        // Won Image1
-        wonImage1 = new BaseActor();
-        wonImage1.setTexture(new Texture(Gdx.files.internal("assets/you-win.png")));
-        wonImage1.setSize(200, 90);
-        wonImage1.setPosition(250, Gdx.graphics.getHeight()/2-wonImage1.getHeight()/2);
-        // Won Image2
-        wonImage2 = new BaseActor();
-        wonImage2.setTexture(new Texture(Gdx.files.internal("assets/you-win.png")));
-        wonImage2.setSize(200, 90);
-        wonImage2.setPosition(850, Gdx.graphics.getHeight()/2-wonImage2.getHeight()/2);
-
         // "Win" Text
         winText = new BaseActor();
         winText.setTexture(new Texture(Gdx.files.internal("assets/you-win.png")));
@@ -178,30 +165,26 @@ public class MazeLevel extends BaseScreen {
         timeLabel.setFontScale(2);
         timeLabel.setPosition(850, 740);
         uiStage.addActor(timeLabel);
-
-        win = false;
-        player1.setX(20f);
-        player1.setY(20f);
-        player2.setX(1205f);
-        player2.setY(20f);
     }
 
     @Override
     public void update(float dt) {
 
+        if( !setPos ) {
+            player1.setPosition(20, 20);
+            player2.setPosition(1205, 20);
+            setPos = true;
+        }
+
         // Score 
         if(!player2.won && player1.getX() + player1.getWidth() > Gdx.graphics.getWidth()/2 -45- finish.getWidth()/2 && player1.getX() + player1.getWidth() < Gdx.graphics.getWidth()/2 + finish.getWidth()/2 + 45 && player1.getY() + player1.getHeight() < 720 && player1.getY() + player1.getHeight() > 670) {
-            player1.setPosition(20,20);
-            player2.setPosition(1205, 20);
             if(time == 0) {
                 player1Score++;
                 player1.setWonToTrue();
                 time++;
-                player2.setPosition(1205,20);
             }
             if( player1Score < 3) {
-                mainStage.addActor(wonImage1);
-                player2.setPosition(1205,20);
+                setPos = false;
                 game.setScreen(new LoadingScreen(game));
             }
             else if(player1Score == 3) {
@@ -210,17 +193,13 @@ public class MazeLevel extends BaseScreen {
             }
         }
         if(!player1.won && player2.getX() > Gdx.graphics.getWidth()/2 -45- finish.getWidth()/2 && player2.getX() < Gdx.graphics.getWidth()/2 + 45 - finish.getWidth()/2 && player2.getY() + player2.getHeight() < 720 && player2.getY() + player2.getHeight() > 670) {
-            player1.setPosition(20,20);
-            player2.setPosition(1205, 20);
             if(time == 0) {
                 player2Score++;
                 player2.setWonToTrue();
                 time++;
-                player1.setPosition(20,20);
             }
             if( player2Score < 3) {
-                mainStage.addActor(wonImage2);
-                player1.setPosition(20,20);
+                setPos = false;
                 game.setScreen(new LoadingScreen(game));
             }
             else if(player2Score == 3) {
@@ -274,7 +253,7 @@ public class MazeLevel extends BaseScreen {
             if(Gdx.input.isKeyPressed(Keys.LEFT)){
                 if( isBrick(player2.getX(), player2.getY(), 'L',player2) ){
                     player2.velocityX = 0;
-                    IUH.play();
+                    // IUH.play();
                 }else{
                     player2.velocityX -= (player2.getSpeed());
                 }
@@ -299,7 +278,7 @@ public class MazeLevel extends BaseScreen {
             if(Gdx.input.isKeyPressed(Keys.DOWN)){
                 if( isBrick(player2.getX(), player2.getY(), 'D',player2) ){
                     player2.velocityY = 0;
-                    IUH.play();
+                    // IUH.play();
                 }else{
                     player2.velocityY -= (player2.getSpeed());
                 }
@@ -371,7 +350,7 @@ public class MazeLevel extends BaseScreen {
 
             if (player1.getBoundingRectangle().contains(orb.getBoundingRectangle())) {
                 // Pick up and add the orb to inventory, if possible
-                System.out.println("Touching orb " + orb);
+                // System.out.println("Touching orb " + orb);
                 ((Orb) orb).effect(player1, player2, mainStage);
                 player1.orbPicked = true;
                 // Make the orb disappear with animation
@@ -383,7 +362,7 @@ public class MazeLevel extends BaseScreen {
 
             if (player2.getBoundingRectangle().contains(orb.getBoundingRectangle())) {
                 // Pick up and add the orb to inventory, if possible
-                System.out.println("Touching orb " + orb);
+                // System.out.println("Touching orb " + orb);
                 ((Orb) orb).effect(player2, player1, mainStage);
                 player2.orbPicked = true;
                 // Make the orb disappear with animation
@@ -507,9 +486,9 @@ public class MazeLevel extends BaseScreen {
                         break;
                     
                     case '3':
-                        orb = new BrickOrb(i, j);
-                        renderBaseActor(orb, j, i, "assets/Orb_Brick.png");
-                        orbs.add(orb);
+                        // orb = new BrickOrb(i, j);
+                        // renderBaseActor(orb, j, i, "assets/Orb_Brick.png");
+                        // orbs.add(orb);
                         break;
                 
                     case '4':
