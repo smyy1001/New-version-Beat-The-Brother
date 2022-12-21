@@ -287,6 +287,8 @@ public class MazeLevel extends BaseScreen {
             // Escape button
             if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                 pausedScreen = true;
+                MainMenu.isBackGroundMusicPlaying = true;
+                MazeLevel.backgroundMusic.pause();
                 Skin skin = new Skin(Gdx.files.internal("assets/Glassy_UI_Skin/glassyui/glassy-ui.json"));
                 blackBackground = new BaseActor();
                 blackBackground.setTexture(new Texture(Gdx.files.internal("assets/blackBackground.jpeg")));
@@ -399,8 +401,10 @@ public class MazeLevel extends BaseScreen {
 
     public void handlePause() {
         if (Gdx.input.isKeyPressed(Keys.M)) {
+            MazeLevel.backgroundMusic.pause();
             game.setScreen(new MainMenu(game));
             Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            MainMenu.isBackGroundMusicPlaying = true;
         }
         if (pauseContinueButton.isPressed()) {
             pausedScreen = false;
@@ -410,6 +414,7 @@ public class MazeLevel extends BaseScreen {
             blackBackground.remove();
             sound.remove();
             soundButton.remove();
+            MainMenu.isBackGroundMusicPlaying = true;
         }
         if (pauseExitButton.isPressed()) {
             Gdx.app.exit();
