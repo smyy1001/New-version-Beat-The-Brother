@@ -9,10 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 
 public abstract class Orb extends BaseActor{
-    /**
-     * author Sumeyye Acar
-     * 08/12/2022
-     */
 
     // Attributes
     int gridX;
@@ -169,23 +165,45 @@ class BrickOrb extends Orb {
         super.mazeArrayChar = '3';
         setGridX(gridX);
         setGridY(gridY);
-        Timer timer;    }
+        Timer timer;    
+    }
 
     @Override
     void effect(Characters p1, Characters p2, Stage mainStage) {
+        float currentSpeed1 = p1.getSpeed();
+        float currentSpeed2 = p2.getSpeed();
+        p1.updateSpeed(-p1.getSpeed());
+        p2.updateSpeed(-p2.getSpeed());
+        final float player1tmx = p1.getX();
+        final float player1tmy = p1.getY();
+        final float player2tmx = p2.getX();
+        final float player2tmy = p2.getY();
 
-        brick = new BaseActor();
-        brick.setTexture(new Texture(Gdx.files.internal("assets/ice.png")));
-        brick.setPosition(p2.getX(), p2.getY());
-        brick.setSize(p2.getWidth(), p2.getHeight());
-        mainStage.addActor(brick);
-        scheduleRemoveEffect(p1, p2);
+        Random rand = new Random();
+        int startingPoint;
+        // We just take MAZE_WIDTH without /2 since it is half of mirrored maze.
+        if( p1.getUserName().equalsIgnoreCase("player1") ) {
+            startingPoint = MazeLevel.mazeObj.MAZE_WIDTH;
+        } else {
+            startingPoint = 0;
+        }
+        for(int i = 0; i < 9;) {
+            int brickX = rand.nextInt(MazeLevel.mazeObj.MAZE_WIDTH) + startingPoint;  
+            int brickY = rand.nextInt(MazeLevel.mazeObj.MAZE_HEIGHT);
+            if( MazeLevel.mazeObj.mirroredMaze[brickY][brickX] == 'O' ) {
+                MazeLevel.mazeObj.mirroredMaze[brickY][brickX] = 'X';
+                MazeLevel.generateAndRenderBaseActor(brickX, brickY, "assets/Brick_gray.jpeg", mainStage);
+                i++;
+            }
+        }
+        p1.setPosition(player1tmx, player1tmy);
+        p2.setPosition(player2tmx, player2tmy);
+        p1.updateSpeed(currentSpeed1);
+        p2.updateSpeed(currentSpeed2);
     }
 
     @Override
     void scheduleRemoveEffect(Characters p1, Characters p2) {
-        // TODO Auto-generated method stub
-        
     }
 
 }

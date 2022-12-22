@@ -183,11 +183,11 @@ public class CharacterScreen extends BaseScreen {
             for (int a = 0; a < 4; a++) {
                 if (firstPlayer == 1 && player1[a].isChecked()) {
                     MazeLevel.player1.updateTexture(playerName1[a]);
-                    // CheeseLevel.player1.updateUserName("");
+                    MazeLevel.player1.updateColor(a);
                 }
                 if (secondPlayer == 1 && player2[a].isChecked()) {
                     MazeLevel.player2.updateTexture(playerName2[a]);
-                    // CheeseLevel.player2.updateUserName("");
+                    MazeLevel.player2.updateColor(a);
                 }
             }
             if (firstPlayer == 1 && secondPlayer == 1) {

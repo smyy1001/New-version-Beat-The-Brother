@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -25,8 +26,8 @@ public class MazeLevel extends BaseScreen {
     MazeGame game;
     ArrayList<BaseActor> bricks;
     List<BaseActor> orbs = new ArrayList<BaseActor>();
-    static Characters player1 = new Characters("player1");
-    static Characters player2 = new Characters("player2");
+    static Characters player1 = new Characters("player1",2);
+    static Characters player2 = new Characters("player2",2);
     private Button pauseExitButton;
     private Button sound;
     private BaseActor finish;
@@ -43,13 +44,14 @@ public class MazeLevel extends BaseScreen {
     private boolean win;
     public static Music backgroundMusic;
     private boolean pausedScreen;
-    maze mazeObj;
+    static maze mazeObj;
     private float timeElapsed;
     private Label timeLabel;
     final int mapWidth = 1366;
     final int mapHeight = 758;
     int time;
     private boolean setPos;
+    private boolean updtaeColor;
     static int player1Score = 0;
     static int player2Score = 0;
     static int currenti=0;
@@ -78,6 +80,7 @@ public class MazeLevel extends BaseScreen {
         speedUp = 80;
 
         setPos = false;
+        updtaeColor = false;
 
         mazeObj = new maze(mazeHeight,mazeWidth);
         mazeObj.generateMaze();
@@ -120,17 +123,19 @@ public class MazeLevel extends BaseScreen {
 
         // The Players
         if (!player1.textureChanged) {
-            player1.setTexture(new Texture(Gdx.files.internal("assets/redBall.png")));
+            player1.setTexture(new Texture(Gdx.files.internal("assets/greenBall.png")));
+            player1.updateColor(1);
         }
         if (!player2.textureChanged) {
-            player2.setTexture(new Texture(Gdx.files.internal("assets/blueBall.png")));
+            player2.setTexture(new Texture(Gdx.files.internal("assets/redBall.png")));
+            player2.updateColor(2);
         }
         
         // Finish
         finish = new BaseActor();
         finish.setTexture(new Texture(Gdx.files.internal("assets/finish.png")));
         finish.setSize(90,90);
-        finish.setPosition(Gdx.graphics.getWidth()/2 - 50 - finish.getWidth()/2, 700);
+        finish.setPosition(595, 700);
         mainStage.addActor(finish);
 
         // "Win" Text
@@ -150,7 +155,7 @@ public class MazeLevel extends BaseScreen {
         player1Pic = new BaseActor();
         player1Pic.setTexture(new Texture(Gdx.files.internal("assets/player1Pic.jpg")));
         player1Pic.setSize(400, 150);
-        player1Pic.setPosition(Gdx.graphics.getWidth()/2-player1Pic.getWidth()/2, Gdx.graphics.getHeight()/2-player1Pic.getHeight()/2 - 10);
+        player1Pic.setPosition(Gdx.graphics.getWidth()/2-player1Pic.getWidth()/2, Gdx.graphics.getHeight()/2-player1Pic.getHeight()/2 - 130);
         
         // Player2 Picture
         player2Pic = new BaseActor();
@@ -176,8 +181,14 @@ public class MazeLevel extends BaseScreen {
             setPos = true;
         }
 
+        if( !updtaeColor ) {
+            player1.updateColor(player1.color);
+            player2.updateColor(player2.color);
+            updtaeColor = true;
+        }
+
         // Score 
-        if(!player2.won && player1.getX() + player1.getWidth() > Gdx.graphics.getWidth()/2 -45- finish.getWidth()/2 && player1.getX() + player1.getWidth() < Gdx.graphics.getWidth()/2 + finish.getWidth()/2 + 45 && player1.getY() + player1.getHeight() < 720 && player1.getY() + player1.getHeight() > 670) {
+        if(!player2.won && player1.getX() + player1.getWidth() > 560 && player1.getX() + player1.getWidth() < 630 && player1.getY() + player1.getHeight() < 720 && player1.getY() + player1.getHeight() > 670) {
             if(time == 0) {
                 player1Score++;
                 player1.setWonToTrue();
@@ -192,7 +203,7 @@ public class MazeLevel extends BaseScreen {
                 mainStage.addActor(player1Pic);
             }
         }
-        if(!player1.won && player2.getX() > Gdx.graphics.getWidth()/2 -45- finish.getWidth()/2 && player2.getX() < Gdx.graphics.getWidth()/2 + 45 - finish.getWidth()/2 && player2.getY() + player2.getHeight() < 720 && player2.getY() + player2.getHeight() > 670) {
+        if(!player1.won && player2.getX() > 560 && player2.getX() < 630 && player2.getY() + player2.getHeight() < 720 && player2.getY() + player2.getHeight() > 670) {
             if(time == 0) {
                 player2Score++;
                 player2.setWonToTrue();
@@ -287,8 +298,6 @@ public class MazeLevel extends BaseScreen {
             // Escape button
             if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
                 pausedScreen = true;
-                MainMenu.isBackGroundMusicPlaying = true;
-                MazeLevel.backgroundMusic.pause();
                 Skin skin = new Skin(Gdx.files.internal("assets/Glassy_UI_Skin/glassyui/glassy-ui.json"));
                 blackBackground = new BaseActor();
                 blackBackground.setTexture(new Texture(Gdx.files.internal("assets/blackBackground.jpeg")));
@@ -401,10 +410,8 @@ public class MazeLevel extends BaseScreen {
 
     public void handlePause() {
         if (Gdx.input.isKeyPressed(Keys.M)) {
-            MazeLevel.backgroundMusic.pause();
             game.setScreen(new MainMenu(game));
             Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
-            MainMenu.isBackGroundMusicPlaying = true;
         }
         if (pauseContinueButton.isPressed()) {
             pausedScreen = false;
@@ -414,7 +421,6 @@ public class MazeLevel extends BaseScreen {
             blackBackground.remove();
             sound.remove();
             soundButton.remove();
-            MainMenu.isBackGroundMusicPlaying = true;
         }
         if (pauseExitButton.isPressed()) {
             Gdx.app.exit();
@@ -423,6 +429,7 @@ public class MazeLevel extends BaseScreen {
         if (soundButton.isChecked()) {
             MazeLevel.backgroundMusic.stop();
             MazeLevel.backgroundMusic.setLooping(false);
+            MainMenu.musicBoolean = false;
         } else {
             MazeLevel.backgroundMusic.play();
             MazeLevel.backgroundMusic.setLooping(true);
@@ -472,7 +479,7 @@ public class MazeLevel extends BaseScreen {
             for (int j = 0; j < mazeObj.mirroredMaze[0].length; j++) {
                 switch (mazeObj.mirroredMaze[i][j]) {
                     case 'X':
-                        brick = generateAndRenderBaseActor(j, i, "assets/Brick_gray.jpeg");
+                        brick = generateAndRenderBaseActor(j, i, "assets/Brick_gray.jpeg", mainStage);
                         bricks.add(brick);
                         currenti = i;
                         currentj = j;
@@ -491,9 +498,9 @@ public class MazeLevel extends BaseScreen {
                         break;
                     
                     case '3':
-                        // orb = new BrickOrb(i, j);
-                        // renderBaseActor(orb, j, i, "assets/Orb_Brick.png");
-                        // orbs.add(orb);
+                        orb = new BrickOrb(i, j);
+                        renderBaseActor(orb, j, i, "assets/Orb_Brick.png");
+                        orbs.add(orb);
                         break;
                 
                     case '4':
@@ -516,13 +523,13 @@ public class MazeLevel extends BaseScreen {
 
     }
 
-    private BaseActor generateAndRenderBaseActor(int gridX, int gridY, String pathToTexture) {
+    public static BaseActor generateAndRenderBaseActor(int gridX, int gridY, String pathToTexture, Stage st) {
         BaseActor returnObj = new BaseActor();
         returnObj.setTexture(new Texture(Gdx.files.internal(pathToTexture)));
         returnObj.setSize(19.2f, 19.2f);
         returnObj.setPosition(gridX * 19.2f, gridY * 19.2f);
         returnObj.setOrigin(returnObj.getWidth() / 2, returnObj.getHeight() / 2);
-        mainStage.addActor(returnObj);
+        st.addActor(returnObj);
         return returnObj;
     }
 

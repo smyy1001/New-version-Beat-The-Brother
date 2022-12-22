@@ -27,7 +27,7 @@ public class MainMenu implements Screen{
     BaseActor background;
     BaseActor scoreLabel;
     float timer;
-    static boolean isBackGroundMusicPlaying = false;
+    static boolean musicBoolean = true;
 
     //Input coordinations
     Vector2 tmp = new Vector2();
@@ -40,16 +40,12 @@ public class MainMenu implements Screen{
         MazeLevel.player1Score = 0;
         MazeLevel.player2Score = 0;
 
-        // Background
-        MazeLevel.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/backgroundSong.mp3"));
-        
-        if (isBackGroundMusicPlaying == false) {
-            isBackGroundMusicPlaying = true;
+        if(musicBoolean) {
+            // Background
+            MazeLevel.backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("assets/backgroundSong.mp3"));
             MazeLevel.backgroundMusic.setLooping(true);
             MazeLevel.backgroundMusic.play();
-        }
-        else{
-            isBackGroundMusicPlaying = true;
+            musicBoolean =false;
         }
 
         batch = new SpriteBatch();

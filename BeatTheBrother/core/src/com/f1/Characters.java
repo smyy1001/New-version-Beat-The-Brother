@@ -17,18 +17,35 @@ public class Characters extends BaseActor {
     ArrayList<Orb> activeOrbs = new ArrayList<Orb>();
     float timeSinceOrb;
     boolean won;
+    int color;
 
     Timer timer = new Timer();
 
     // The Constructor
-    Characters(String userName) {
+    Characters(String userName, int color) {
         setSpeed();
+        this.userName = userName;
         won = false;
+        this.color = color;
     }
 
     // Setter of the Speed
     private void setSpeed() { 
         this.speed = 150; 
+    }
+
+    // 0 : blue / 1 : green / 2 : red / 3 : purple 
+    public void updateColor(int c) {
+        this.color = c;
+        if(color == 0) {
+            updateSpeed(-10);
+        }
+        else if(color == 1) {
+            updateSpeed(+10);
+        }
+        else if(color == 3) {
+            setSize(getWidth()+15, getHeight()+15);
+        }
     }
 
     // Updating the Speed
