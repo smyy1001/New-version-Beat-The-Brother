@@ -12,3 +12,4 @@
 Instructions: In order to run the game on your local machine; you have to make sure you have a suitable environment to run java code (VS Code), you have to setup libGDX and download gradle (a VS code Extension).
 
 Attention!!! If you are using a Macbook or any device with operating system MacOS do the following: 
+In order to run the game, you should add; api "com.badlogicgames.gdx:gdx-lwjgl3-glfw-awt-macos:$gdxVersion" command to the dependencies under the project(":desktop") that is in the build.gradle file.
