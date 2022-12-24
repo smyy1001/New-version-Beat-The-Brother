@@ -1,0 +1,25 @@
+Personal Log File - Sümeyye Acar 22103640
+-----------------------
+first week
+-The first week I started ACTUALLY learning and searching java's gaming library and it is not that bad 
+-Watched some youtube videos, the visuals are horrible most of the time but the functionality is not
+as bad as I imagined it would be.
+-I wrote the outline of the character class
+couple of tricks with the library we'll use. None of us has ever used it so I really need to learn it well
+-Btw, we are communicating via whatsapp and letting each other know about how it is going.
+-We also meet in the library frequently
+-----------------------
+second week
+-The character class is kinda finalized and the character screen is formed
+-we still are meeting in the library after the classes
+-the library is quite confusing but I feel more confident than last week. feel like a learned a lot already
+-yusuf had some fundamentals coming and enes had the maze algorithm, so I started building a road map in my mind
+about the screens I must write 
+-----------------------
+last and week (finally ☻)
+-the last week was quite busy but really fun tho. 
+-I finalized several screens (Characters Screen, MainMenu, Loading Screen)
+-needed to add some methods to the Characters class 
+-wrote some parts of the MazeLevel class (it is a huge class and the most complex class, we all have had 
+a great amount of work in that class)
+-we spend a lot of time with the group and coded together in the last week mostly
