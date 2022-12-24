@@ -1,7 +1,7 @@
 Enes Agirman
 22003482
 
-	I mainly worked on doing the project other than doing the necessary reports for the last 3 week of the project deadline.
+	I mainly worked on doing the project for the last 3 week of the project deadline other than doing the necessary reports.
 	In the first week, I searched the internet, mainly youTube to learn about java libGDX and how to use it.I also made the
 background song of the game using Ableton Live.
 	In the second week, I worked on the procedural maze generation. I searched of ways to generate a maze randomly and I found
