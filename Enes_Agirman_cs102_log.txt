@@ -1,0 +1,14 @@
+Enes Agirman
+22003482
+
+	I mainly worked on doing the project other than doing the necessary reports for the last 3 week of the project deadline.
+	In the first week, I searched the internet, mainly youTube to learn about java libGDX and how to use it.I also made the
+background song of the game using Ableton Live.
+	In the second week, I worked on the procedural maze generation. I searched of ways to generate a maze randomly and I found
+out about the recursive backtracking algorithm. I created the maze class and implemented the recursive backtracking algorithm I searched 
+about to randomly generate mazes.
+	In the third and last week, I helped my teammates to work on the code, fix bugs. I mainly worked on the mazeLevel class about the 
+character movement and collision detection and Orbs class about the functionality of orbs.
+	We made regural meetings throughout these 3 weeks and discussed our design choices and how to implement them and also searched for ways 
+to implement them when we can't think of a way to implement them. We worked on the code together when one person is stuck and we worked together 
+to search and fix bugs.
