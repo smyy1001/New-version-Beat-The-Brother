@@ -1,0 +1,17 @@
+Personal Log:
+
+* I have learned LibGdx library for a month with the helper online course
+
+* I have made a simple game to learn how LibGdx works and how can we use some functionalities and properties in our game
+
+* We made a discussion about the work distribution and project process.
+
+* I have written the classes and functions that will create the basis and fundamental of the game and will be useful to us in the later of the project.
+
+* We held a meeting to look at the work done according to the task distribution we had planned in the previous meeting.
+
+* In the last 2 weeks, we have started to write code side by side as a group and move the project forward. The distribution of duties became sharper and began to be assigned about more specific events.
+
+* In the last week, we first completed the missing screens by distributing the work, and also finished some algorithms.
+
+* On the last day's meeting, we fixed the bugs in the game as much as possible and we also made the GUI part of the game beautiful.
