@@ -1,0 +1,7 @@
+Throughout the 3 weeks we acted as a team and worked equally on the project. My involvement was mostly on the implementation of the Orb Class and its related subclasses. I was responsible for their implementation and making sure they were handled correctly throughout other classes as well.
+
+- First week was mostly about getting accustomed to LibGDX and its features. I spend about an hour daily looking at the documentation of LibGDX and projects done with the library
+
+- The second week also contained small meetings with the team about the game. Yusuf had began to lay some foundations about the game
+
+- Our most important week was the last week. I started by implementing the abstract Orb class which took around a full day - 8 to 10 hours. Afterwards I took the second day to generate orbs during the map generation and other related issues which took about 3 to 4 hours. Afterwards implementing the other orbs with other team members took 4 to 5 hours. We finally took around 8 hours on the final bug fixing.  On the last day, we made sure that the game was ready for the demo, which I worked on for about 5 to 6 hours before the presentation.
